@@ -6,6 +6,16 @@ import time
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(page_title="Career Guidance System", page_icon="🎯", layout="wide")
 
+# ------------------ CUSTOM STYLING ------------------
+st.markdown("""
+<style>
+.big-title {font-size:40px !important; font-weight:bold; color:#4CAF50;}
+.section {font-size:26px !important; font-weight:bold; margin-top:20px;}
+.sub {font-size:20px !important; font-weight:bold; color:#2196F3;}
+.text {font-size:18px !important;}
+</style>
+""", unsafe_allow_html=True)
+
 # ------------------ USER DATABASE ------------------
 USER_FILE = "users.json"
 
@@ -22,18 +32,14 @@ def save_users(users):
 users = load_users()
 
 # ------------------ ANIMATION ------------------
-def typing_animation(text):
-    placeholder = st.empty()
-    for i in range(len(text) + 1):
-        placeholder.markdown(f"### {text[:i]}")
-        time.sleep(0.02)
+def show_title(text):
+    st.markdown(f"<div class='big-title'>{text}</div>", unsafe_allow_html=True)
 
-# ------------------ LOGIN / SIGNUP ------------------
+# ------------------ LOGIN ------------------
 def login_signup():
-    st.title("🔐 Login / Signup")
+    show_title("🔐 Login / Signup")
 
-    option = st.radio("Select Option", ["Login", "Signup"])
-
+    option = st.radio("Choose Option", ["Login", "Signup"])
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
@@ -50,19 +56,17 @@ def login_signup():
         if st.button("Login"):
             if username in users and users[username] == password:
                 st.session_state["user"] = username
-                st.success("Login successful!")
                 st.rerun()
             else:
                 st.error("Invalid credentials")
 
-# ------------------ AUTH CHECK ------------------
+# ------------------ AUTH ------------------
 if "user" not in st.session_state:
     login_signup()
     st.stop()
 
 # ------------------ SIDEBAR ------------------
-st.sidebar.title(f"👋 Welcome {st.session_state['user']}")
-
+st.sidebar.title(f"👋 {st.session_state['user']}")
 menu = st.sidebar.radio("Menu", [
     "🏠 Home",
     "🎓 After 10th",
@@ -74,107 +78,149 @@ menu = st.sidebar.radio("Menu", [
 
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
-    typing_animation("🎯 AI Career Guidance System")
-    st.write("This system helps students choose the best career path based on their interests.")
+    show_title("🎯 AI Career Guidance System")
+    st.markdown("<div class='text'>Helping students choose the best career path based on interests and goals.</div>", unsafe_allow_html=True)
 
 # ------------------ AFTER 10TH ------------------
 elif menu == "🎓 After 10th":
-    st.title("🎓 Career Options After 10th (Complete Guide)")
+    show_title("🎓 Career Options After 10th")
+    st.info("Choose based on Interest + Time + Career Goals")
 
-    st.header("1️⃣ Intermediate (11th & 12th)")
-    st.write("Streams: Science, Commerce, Arts")
-    st.success("Best for long-term careers")
+    st.markdown("<div class='section'>Streams & Paths</div>", unsafe_allow_html=True)
 
-    st.header("2️⃣ Polytechnic Diploma")
-    st.write("Fields: Mechanical, Civil, AI, Electronics")
-
-    st.header("3️⃣ ITI")
-    st.write("Trades: Electrician, CNC, AC Technician")
-
-    st.header("4️⃣ Paramedical Courses")
-    st.write("MLT, X-Ray, Dialysis Technician")
-
-    st.header("5️⃣ Agriculture")
-    st.write("Diploma in Agriculture, Fisheries")
-
-    st.header("6️⃣ Vocational Courses")
-    st.write("Retail, Tourism, Food Processing")
-
-    st.header("7️⃣ Creative Fields")
-    st.write("Animation, UI/UX, Fashion Design")
-
-    st.header("8️⃣ Hotel Management")
-    st.write("Hotel, Catering, Culinary Arts")
-
-    st.header("9️⃣ Sports")
-    st.write("Athlete, Coach, Trainer")
-
-    st.header("🔟 Defense")
-    st.write("Army, Navy, Sainik Schools")
-
-    st.header("1️⃣1️⃣ Open Schooling")
-    st.write("NIOS")
-
-    st.header("1️⃣2️⃣ Business")
-    st.write("Startups, Freelancing")
-
-    st.header("📊 Comparison Table")
-    st.table({
-        "Path": ["Intermediate", "Diploma", "ITI", "Paramedical"],
-        "Duration": ["2 yrs", "3 yrs", "1–2 yrs", "1–3 yrs"],
-        "Growth": ["High", "High", "Medium", "High"]
-    })
-
-    st.header("💡 Best Path for AI/ML")
-    st.success("10th → Science → B.Tech → AI Job")
+    st.markdown("""
+- Intermediate (Science, Commerce, Arts)
+- Polytechnic Diploma
+- ITI
+- Paramedical Courses
+- Agriculture
+- Vocational Courses
+- Creative Fields
+- Hotel Management
+- Sports
+- Defense
+- Business / Freelancing
+""")
 
 # ------------------ AFTER 12TH ------------------
 elif menu == "📘 After 12th":
-    st.title("📘 Career Options After 12th")
+    show_title("📘 Career Options After 12th (FULL GUIDE)")
 
-    stream = st.selectbox("Choose Stream", ["Science", "Commerce", "Arts"])
+    st.markdown("<div class='section'>🎯 Higher Studies</div>", unsafe_allow_html=True)
 
-    if stream == "Science":
-        st.write("Engineering, MBBS, Data Science, AI")
+    st.markdown("<div class='sub'>🔬 Science Students</div>", unsafe_allow_html=True)
+    st.markdown("""
+**MPC:**
+- B.Tech (CSE, AI, Mechanical, Civil)
+- BCA
+- NDA
 
-    elif stream == "Commerce":
-        st.write("CA, B.Com, MBA, Banking")
+**BiPC:**
+- MBBS
+- BDS
+- Pharmacy
+- Nursing
+- Biotechnology
+""")
 
-    elif stream == "Arts":
-        st.write("UPSC, Law, Journalism")
+    st.markdown("<div class='sub'>💼 Commerce</div>", unsafe_allow_html=True)
+    st.markdown("""
+- B.Com
+- BBA
+- CA, CS, CMA
+- Banking & Finance
+""")
+
+    st.markdown("<div class='sub'>🎨 Arts</div>", unsafe_allow_html=True)
+    st.markdown("""
+- BA
+- LLB
+- Journalism
+- Psychology
+""")
+
+    st.markdown("<div class='section'>🪖 Government Jobs</div>", unsafe_allow_html=True)
+    st.markdown("""
+- NDA (Army/Navy/Airforce)
+- SSC CHSL / MTS
+- Railways (TC, Clerk)
+- Police Jobs
+- Forest Guard, Post Office
+""")
+
+    st.markdown("<div class='section'>🛠️ Professional Courses</div>", unsafe_allow_html=True)
+    st.markdown("""
+- IT: Web Dev, Data Science, Cyber Security
+- Paramedical
+- Hotel Management
+- Animation & Design
+- Law (LLB)
+""")
+
+    st.markdown("<div class='section'>🚀 Alternative Careers</div>", unsafe_allow_html=True)
+    st.markdown("""
+- Business / Startup
+- Freelancing
+- Content Creation
+- Sports
+""")
+
+    st.markdown("<div class='section'>📊 Comparison</div>", unsafe_allow_html=True)
+    st.table({
+        "Path": ["B.Tech", "Medical", "Govt Jobs", "Creative", "Business"],
+        "Growth": ["Very High", "Very High", "Medium", "High", "Unlimited"],
+        "Difficulty": ["High", "Very High", "Medium", "Skill-based", "Risky"]
+    })
+
+    st.markdown("<div class='section'>🎯 Smart Government Path</div>", unsafe_allow_html=True)
+    st.success("""
+12th → Graduation → UPSC / SSC  
+OR  
+12th → SSC / Defense  
+OR  
+12th → Degree → Banking / Railways
+""")
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
-    st.title("💼 Public vs Private Sector")
+    show_title("💼 Career Sectors")
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("🏛️ Government Jobs")
+        st.subheader("🏛️ Government")
         st.write("UPSC, Banking, Railways, Defense")
 
     with col2:
-        st.subheader("🏢 Private Jobs")
-        st.write("Software, Data Science, Marketing")
+        st.subheader("🏢 Private")
+        st.write("Software, Marketing, Business, Design")
 
 # ------------------ AI RECOMMENDATION ------------------
 elif menu == "🤖 AI Recommendation":
-    st.title("🤖 Career Recommendation")
+    show_title("🤖 Career Recommendation")
 
-    interest = st.selectbox("Interest", ["Technology", "Biology", "Business", "Arts"])
+    interest = st.selectbox("Select Interest", [
+        "Technology", "Biology", "Business", "Arts", "Creative", "Sports"
+    ])
 
     if st.button("Get Recommendation"):
         if interest == "Technology":
-            st.success("AI Engineer / Developer")
+            st.success("Software, AI, Data Science")
 
         elif interest == "Biology":
-            st.success("Doctor / Healthcare")
+            st.success("Doctor, Pharmacy, Healthcare")
 
         elif interest == "Business":
-            st.success("CA / MBA")
+            st.success("CA, MBA, Entrepreneurship")
+
+        elif interest == "Creative":
+            st.success("Design, Animation, Media")
+
+        elif interest == "Sports":
+            st.success("Athlete, Coach")
 
         else:
-            st.success("UPSC / Law")
+            st.success("UPSC, Law, Govt Jobs")
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
