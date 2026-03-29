@@ -271,9 +271,73 @@ Careers:
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
-    st.markdown("<div class='big-title'>💼 Career Sectors</div>", unsafe_allow_html=True)
-    st.write("Simple explanation provided in previous section")
 
+    st.markdown("<div class='big-title'>💼 Career Sectors</div>", unsafe_allow_html=True)
+
+    # -------- PUBLIC SECTOR --------
+    st.markdown("<div class='section'>🏛️ Public Sector (Government)</div>", unsafe_allow_html=True)
+
+    st.markdown("""
+Jobs provided by the government with high job security and benefits.
+
+**Examples:**
+- UPSC (IAS, IPS)  
+- Banking (SBI, IBPS)  
+- Railways  
+- Defense  
+- SSC  
+
+**Advantages:**
+- Job security  
+- Fixed working hours  
+- Pension & benefits  
+
+**Challenges:**
+- Tough competition  
+- Slower career growth  
+
+**What to Study:**
+- GK  
+- Reasoning  
+- English  
+- Current Affairs  
+""")
+
+    # -------- PRIVATE SECTOR --------
+    st.markdown("<div class='section'>🏢 Private Sector</div>", unsafe_allow_html=True)
+
+    st.markdown("""
+Jobs in companies and industries with faster growth and higher salary potential.
+
+**Examples:**
+- IT (Software Developer)  
+- Marketing  
+- Finance  
+- HR  
+- Design  
+
+**Advantages:**
+- High salary   
+- Fast career growth   
+- More opportunities  
+
+**Challenges:**
+- Job pressure  
+- Less job security  
+
+**What to Study:**
+- Technical skills  
+- Communication  
+- Domain knowledge  
+""")
+
+    # -------- TIP --------
+    st.markdown("<div class='section'>✅ Tip</div>", unsafe_allow_html=True)
+
+    st.success("""
+👉 Choose Public Sector for stability  
+👉 Choose Private Sector for growth and salary  
+""")
 # ------------------ AI ------------------
 elif menu == "🤖 AI Recommendation":
 
