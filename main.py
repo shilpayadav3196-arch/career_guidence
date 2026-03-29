@@ -1,250 +1,144 @@
 import streamlit as st
 import json
 import os
-import time
 
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(page_title="Career Guidance System", page_icon="🎯", layout="wide")
 
-# ------------------ CUSTOM STYLING ------------------
+# ------------------ PREMIUM CSS ------------------
 st.markdown("""
 <style>
-.big-title {font-size:40px !important; font-weight:bold; color:#4CAF50;}
-.section {font-size:26px !important; font-weight:bold; margin-top:20px;}
-.sub {font-size:20px !important; font-weight:bold; color:#2196F3;}
-.text {font-size:18px !important;}
+.stApp {
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    color: white;
+}
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    margin: 10px 0;
+}
+.title {
+    font-size: 36px;
+    text-align:center;
+    font-weight:bold;
+}
+.stButton>button {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    border-radius: 10px;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------ USER DATABASE ------------------
+# ------------------ USER DB ------------------
 USER_FILE = "users.json"
 
 def load_users():
     if os.path.exists(USER_FILE):
-        with open(USER_FILE, "r") as f:
-            return json.load(f)
+        return json.load(open(USER_FILE))
     return {}
 
 def save_users(users):
-    with open(USER_FILE, "w") as f:
-        json.dump(users, f)
+    json.dump(users, open(USER_FILE, "w"))
 
 users = load_users()
 
-# ------------------ ANIMATION ------------------
-def show_title(text):
-    st.markdown(f"<div class='big-title'>{text}</div>", unsafe_allow_html=True)
-
 # ------------------ LOGIN ------------------
-def login_signup():
-    st.markdown("""
-    <style>
-    .login-box {
-        background-color: #1e1e2f;
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
-    }
-    .title {
-        text-align:center;
-        font-size:30px;
-        font-weight:bold;
-        color:#4CAF50;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+def login():
+    st.markdown("<div class='title'>🔐 Login System</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='title'>🎯 Career Guidance Login</div>", unsafe_allow_html=True)
+    option = st.radio("", ["Login", "Signup"])
+    user = st.text_input("Username")
+    pwd = st.text_input("Password", type="password")
 
-    col1, col2, col3 = st.columns([1,2,1])
+    if option == "Signup":
+        if st.button("Create Account"):
+            users[user] = pwd
+            save_users(users)
+            st.success("Account created")
 
-    with col2:
-        st.markdown("<div class='login-box'>", unsafe_allow_html=True)
+    if option == "Login":
+        if st.button("Login"):
+            if user in users and users[user] == pwd:
+                st.session_state["user"] = user
+                st.rerun()
+            else:
+                st.error("Invalid")
 
-        option = st.radio("", ["Login", "Signup"])
-
-        username = st.text_input("👤 Username")
-        password = st.text_input("🔑 Password", type="password")
-
-        if option == "Signup":
-            if st.button("🚀 Create Account", use_container_width=True):
-                if username in users:
-                    st.error("User already exists!")
-                else:
-                    users[username] = password
-                    save_users(users)
-                    st.success("Account created!")
-
-        if option == "Login":
-            if st.button("🔓 Login", use_container_width=True):
-                if username in users and users[username] == password:
-                    st.session_state["user"] = username
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials")
-
-        st.markdown("</div>", unsafe_allow_html=True)
-# ------------------ AUTH ------------------
 if "user" not in st.session_state:
-    login_signup()
+    login()
     st.stop()
 
 # ------------------ SIDEBAR ------------------
-st.sidebar.title(f"👋 {st.session_state['user']}")
 menu = st.sidebar.radio("Menu", [
-    "🏠 Home",
-    "🎓 After 10th",
-    "📘 After 12th",
-    "💼 Career Sectors",
-    "🤖 AI Recommendation",
-    "🚪 Logout"
+    "🏠 Home", "🎓 After 10th", "📘 After 12th",
+    "💼 Career Sectors", "🤖 AI Recommendation", "🚪 Logout"
 ])
 
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
-    show_title("🎯 AI Career Guidance System")
-    st.markdown("<div class='text'>Helping students choose the best career path based on interests and goals.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+    col1.markdown("<div class='card'>🎓 50+ Career Options</div>", unsafe_allow_html=True)
+    col2.markdown("<div class='card'>💼 Govt + Private Jobs</div>", unsafe_allow_html=True)
+    col3.markdown("<div class='card'>🤖 AI Guidance</div>", unsafe_allow_html=True)
 
 # ------------------ AFTER 10TH ------------------
 elif menu == "🎓 After 10th":
-    show_title("🎓 Career Options After 10th")
-    st.info("Choose based on Interest + Time + Career Goals")
+    st.markdown("<div class='title'>🎓 After 10th Guide</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='section'>Streams & Paths</div>", unsafe_allow_html=True)
-
-    st.markdown("""
-- Intermediate (Science, Commerce, Arts)
-- Polytechnic Diploma
-- ITI
-- Paramedical Courses
-- Agriculture
-- Vocational Courses
-- Creative Fields
-- Hotel Management
-- Sports
-- Defense
-- Business / Freelancing
-""")
+    st.markdown("<div class='card'>1️. Intermediate (Science, Commerce, Arts)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>2️. Diploma (Engineering fields)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>3️. ITI (Technical jobs)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>4️. Paramedical (Healthcare)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>5️. Agriculture</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>6️. Vocational Courses</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>7️. Creative Fields</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>8️. Hotel Management</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>9️. Sports</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>10. Defense</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>1️1. Open School</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>1️2️. Business</div>", unsafe_allow_html=True)
 
 # ------------------ AFTER 12TH ------------------
 elif menu == "📘 After 12th":
-    show_title("📘 Career Options After 12th (FULL GUIDE)")
+    st.markdown("<div class='title'>📘 After 12th Full Guide</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='section'>🎯 Higher Studies</div>", unsafe_allow_html=True)
+    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Studies", "🪖 Govt Jobs", "  Courses", " Careers"])
 
-    st.markdown("<div class='sub'>🔬 Science Students</div>", unsafe_allow_html=True)
-    st.markdown("""
-**MPC:**
-- B.Tech (CSE, AI, Mechanical, Civil)
-- BCA
-- NDA
+    with tab1:
+        st.markdown("<div class='card'>Engineering, Medical, BCA, BBA, BA</div>", unsafe_allow_html=True)
 
-**BiPC:**
-- MBBS
-- BDS
-- Pharmacy
-- Nursing
-- Biotechnology
-""")
+    with tab2:
+        st.markdown("<div class='card'>NDA, SSC, Railways, Police</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='sub'>💼 Commerce</div>", unsafe_allow_html=True)
-    st.markdown("""
-- B.Com
-- BBA
-- CA, CS, CMA
-- Banking & Finance
-""")
+    with tab3:
+        st.markdown("<div class='card'>IT, Paramedical, Design, Law</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='sub'>🎨 Arts</div>", unsafe_allow_html=True)
-    st.markdown("""
-- BA
-- LLB
-- Journalism
-- Psychology
-""")
+    with tab4:
+        st.markdown("<div class='card'>Freelancing, Business, YouTube</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='section'>🪖 Government Jobs</div>", unsafe_allow_html=True)
-    st.markdown("""
-- NDA (Army/Navy/Airforce)
-- SSC CHSL / MTS
-- Railways (TC, Clerk)
-- Police Jobs
-- Forest Guard, Post Office
-""")
-
-    st.markdown("<div class='section'>🛠️ Professional Courses</div>", unsafe_allow_html=True)
-    st.markdown("""
-- IT: Web Dev, Data Science, Cyber Security
-- Paramedical
-- Hotel Management
-- Animation & Design
-- Law (LLB)
-""")
-
-    st.markdown("<div class='section'>🚀 Alternative Careers</div>", unsafe_allow_html=True)
-    st.markdown("""
-- Business / Startup
-- Freelancing
-- Content Creation
-- Sports
-""")
-
-    st.markdown("<div class='section'>📊 Comparison</div>", unsafe_allow_html=True)
-    st.table({
-        "Path": ["B.Tech", "Medical", "Govt Jobs", "Creative", "Business"],
-        "Growth": ["Very High", "Very High", "Medium", "High", "Unlimited"],
-        "Difficulty": ["High", "Very High", "Medium", "Skill-based", "Risky"]
-    })
-
-    st.markdown("<div class='section'>🎯 Smart Government Path</div>", unsafe_allow_html=True)
-    st.success("""
-12th → Graduation → UPSC / SSC  
-OR  
-12th → SSC / Defense  
-OR  
-12th → Degree → Banking / Railways
-""")
-
-# ------------------ CAREER SECTORS ------------------
+# ------------------ CAREER SECTOR ------------------
 elif menu == "💼 Career Sectors":
-    show_title("💼 Career Sectors")
+    st.markdown("<div class='title'>💼 Career Sectors</div>", unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
-    with col1:
-        st.subheader("🏛️ Government")
-        st.write("UPSC, Banking, Railways, Defense")
+    col1.markdown("<div class='card'>🏛 Govt Jobs<br>UPSC, Banking, Railways</div>", unsafe_allow_html=True)
+    col2.markdown("<div class='card'>🏢 Private Jobs<br>IT, Marketing</div>", unsafe_allow_html=True)
 
-    with col2:
-        st.subheader("🏢 Private")
-        st.write("Software, Marketing, Business, Design")
-
-# ------------------ AI RECOMMENDATION ------------------
+# ------------------ AI RECOMMEND ------------------
 elif menu == "🤖 AI Recommendation":
-    show_title("🤖 Career Recommendation")
+    st.markdown("<div class='title'>🤖 Career Recommendation</div>", unsafe_allow_html=True)
 
-    interest = st.selectbox("Select Interest", [
-        "Technology", "Biology", "Business", "Arts", "Creative", "Sports"
-    ])
+    interest = st.selectbox("Interest", ["Technology", "Biology", "Business", "Creative"])
 
-    if st.button("Get Recommendation"):
-        if interest == "Technology":
-            st.success("Software, AI, Data Science")
-
-        elif interest == "Biology":
-            st.success("Doctor, Pharmacy, Healthcare")
-
-        elif interest == "Business":
-            st.success("CA, MBA, Entrepreneurship")
-
-        elif interest == "Creative":
-            st.success("Design, Animation, Media")
-
-        elif interest == "Sports":
-            st.success("Athlete, Coach")
-
-        else:
-            st.success("UPSC, Law, Govt Jobs")
+    if st.button("Get Career"):
+        st.balloons()
+        st.success("Best career generated!")
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
