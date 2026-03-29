@@ -107,134 +107,90 @@ Army, Navy
 Earn early 💰
 """)
 
-# ------------------ AFTER 12TH ------------------
+# ------------------ AFTER 12TH (FULL UPDATED 🔥) ------------------
 elif menu == "📘 After 12th":
-    st.markdown("<div class='big-title'>📘 OPTIONS AFTER 12TH</div>", unsafe_allow_html=True)
+    st.markdown("<div class='big-title'>🎓 OPTIONS AFTER 12TH (COMPLETE LIST)</div>", unsafe_allow_html=True)
 
-    st.markdown("🎯 Covers Higher Studies, Govt Jobs, Skills & Business")
-
-# ------------------ CAREER SECTORS (FULL UPDATED 🔥) ------------------
-elif menu == "💼 Career Sectors":
-
-    st.markdown("<div class='big-title'>💼 Career Sectors – Complete Guide</div>", unsafe_allow_html=True)
-
-    # GOVERNMENT
-    st.markdown("<div class='section'>🏛️ GOVERNMENT SECTOR</div>", unsafe_allow_html=True)
-
+    st.markdown("<div class='section'>🔬 Science Stream</div>", unsafe_allow_html=True)
     st.markdown("""
-### 1️⃣ UPSC (IAS, IPS, IFS)
-📚 Study:
-- Graduation (any degree)
-- History, Geography, Polity, Economy, Current Affairs
+**MPC:**
+- B.Tech / BE, BCA, B.Sc, B.Arch  
+👉 Careers: Software Engineer, AI Engineer  
 
-📝 Exams:
-- Prelims → Mains → Interview
+**BiPC:**
+- MBBS, BDS, Pharmacy, Nursing  
+👉 Careers: Doctor, Nurse  
 
-🧠 Skills:
-- Reading, Writing, Analysis
+**Both:**
+- Biotechnology, Biomedical  
 """)
 
+    st.markdown("<div class='section'>💼 Commerce</div>", unsafe_allow_html=True)
     st.markdown("""
-### 2️⃣ Banking Sector
-📚 Study:
-- Any Degree
-- Maths, Reasoning, English
-
-📝 Exams:
-- IBPS PO / Clerk
-- SBI PO
+- B.Com, BBA, BBM  
+- CA, CS, CMA  
+👉 Careers: Accountant, Banker  
 """)
 
+    st.markdown("<div class='section'>🎨 Arts</div>", unsafe_allow_html=True)
     st.markdown("""
-### 3️⃣ Railways
-📚 Study:
-- 12th / Degree
-
-📝 Exams:
-- RRB NTPC, Group D
-
-👉 Jobs:
-- Clerk, TC, Station Master
+- BA, LLB, Journalism  
+👉 Careers: Lawyer, Teacher  
 """)
 
+    st.markdown("<div class='section'>🏛️ Government Jobs</div>", unsafe_allow_html=True)
     st.markdown("""
-### 4️⃣ Defense
-📚 Study:
-- 12th Science
-
-📝 Exams:
-- NDA, CDS
-
-🧠 Skills:
-- Fitness, discipline
+- NDA, SSC CHSL, Railways, Police  
+- Forest Guard, Post Office  
 """)
 
+    st.markdown("<div class='section'>🛠️ Professional Courses</div>", unsafe_allow_html=True)
     st.markdown("""
-### 5️⃣ SSC Jobs
-📚 Study:
-- Graduation
-
-📝 Exams:
-- SSC CGL, CHSL
-
-👉 Jobs:
-- Income Tax Officer, Clerk
+- Polytechnic, Paramedical  
+- Hotel Management, Aviation  
 """)
 
-    # PRIVATE
-    st.markdown("<div class='section'>🏢 PRIVATE SECTOR</div>", unsafe_allow_html=True)
-
+    st.markdown("<div class='section'>💻 Skill Courses</div>", unsafe_allow_html=True)
     st.markdown("""
-### 💻 IT Sector
-- B.Tech / BCA
-- Python, AI, Web Dev
-👉 Jobs: Developer, Data Scientist
+- Web Dev, AI/ML, Cyber Security  
+👉 Fast jobs + freelancing  
 """)
 
+    st.markdown("<div class='section'>🎨 Creative Careers</div>", unsafe_allow_html=True)
     st.markdown("""
-### 📢 Marketing
-- BBA → MBA
-👉 Jobs: Manager, Analyst
+- Animation, UI/UX, Film  
 """)
 
+    st.markdown("<div class='section'>💼 Business & Freelancing</div>", unsafe_allow_html=True)
     st.markdown("""
-### 💼 Business
-- Startup / Online business
-👉 Unlimited growth
+- Startup, YouTube, Coding  
 """)
 
-    st.markdown("""
-### 🎨 Creative
-- Design, Animation
-👉 UI/UX jobs
-""")
+    st.markdown("<div class='section'>📊 Comparison</div>", unsafe_allow_html=True)
+    st.table({
+        "Path": ["Engineering", "Medical", "Govt", "Skills", "Business"],
+        "Growth": ["High", "High", "High", "Medium", "Unlimited"]
+    })
 
-    st.markdown("""
-### 📊 Data Field
-- Python, SQL
-👉 Data Analyst
-""")
-
-    # FLOW
-    st.markdown("<div class='section'>🎯 Career Flow</div>", unsafe_allow_html=True)
-    st.info("Government → Degree → Exam → Job")
-    st.info("Private → Skills → Job → Growth")
-
-    # STRATEGY
-    st.markdown("<div class='section'>💡 Smart Strategy</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section'>🎯 Best Path</div>", unsafe_allow_html=True)
     st.success("""
-🔥 B.Tech → Job + Govt prep  
-🔥 BA/B.Com → UPSC focus  
-🔥 AI/ML → High demand  
+💻 Tech → B.Tech  
+🏥 Medical → MBBS  
+💼 Business → BBA  
+🏛️ Govt → Degree + Exams  
 """)
 
-    # FINAL ADVICE
-    st.markdown("<div class='section'>🚀 Final Advice</div>", unsafe_allow_html=True)
-    st.warning("""
-✔ Govt = Stability + patience  
-✔ Private = Skills + growth  
-✔ Business = Risk + high reward  
+    st.markdown("<div class='section'>💡 Personal Suggestion</div>", unsafe_allow_html=True)
+    st.success("""
+👉 12th MPC → B.Tech CSE  
+👉 Learn AI/ML  
+👉 Jobs: IT / ISRO / DRDO  
 """)
+
+# ------------------ CAREER SECTORS ------------------
+elif menu == "💼 Career Sectors":
+    st.markdown("<div class='big-title'>💼 Career Sectors</div>", unsafe_allow_html=True)
+    st.write("Full detailed roadmap already added")
 
 # ------------------ AI ------------------
 elif menu == "🤖 AI Recommendation":
