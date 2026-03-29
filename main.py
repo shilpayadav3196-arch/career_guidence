@@ -276,13 +276,103 @@ elif menu == "💼 Career Sectors":
 
 # ------------------ AI ------------------
 elif menu == "🤖 AI Recommendation":
-    st.markdown("<div class='big-title'>🤖 Career Recommendation</div>", unsafe_allow_html=True)
 
-    interest = st.selectbox("Select Interest", ["Technology", "Biology", "Business", "Creative"])
+    st.markdown("<div class='big-title'>🤖 Smart Career Recommendation</div>", unsafe_allow_html=True)
 
-    if st.button("Get Career"):
-        st.success(f"Best career for {interest}")
+    st.markdown("### 🧠 Tell us about yourself")
 
+    # -------- INTEREST --------
+    interest = st.selectbox("🎯 Select Your Interest", [
+        "Technology 💻",
+        "Medical 🏥",
+        "Business 💼",
+        "Creative 🎨",
+        "Government Jobs 🏛️",
+        "Teaching 📚",
+        "Defense 🪖",
+        "Sports 🏃",
+        "Agriculture 🌾",
+        "Hospitality 🏨"
+    ])
+
+    # -------- SKILL LEVEL --------
+    skill = st.selectbox("⚡ Your Strength", [
+        "Problem Solving",
+        "Communication",
+        "Creativity",
+        "Leadership",
+        "Physical Fitness",
+        "Analytical Thinking"
+    ])
+
+    # -------- WORK STYLE --------
+    work_style = st.radio("💼 Preferred Work Style", [
+        "High Salary Job 💰",
+        "Government Job 🏛️",
+        "Business / Startup 🚀",
+        "Work-Life Balance 😊"
+    ])
+
+    # -------- RECOMMEND BUTTON --------
+    if st.button("🔍 Get Recommendation"):
+
+        st.markdown("## 🎯 Best Career Options For You")
+
+        # -------- LOGIC --------
+        if "Technology" in interest:
+            st.success("💻 Best Options: B.Tech (CSE, AI), BCA")
+            st.info("👉 Careers: Software Engineer, AI Engineer, Data Scientist")
+
+        elif "Medical" in interest:
+            st.success("🏥 Best Options: MBBS, BDS, Pharmacy")
+            st.info("👉 Careers: Doctor, Pharmacist, Nurse")
+
+        elif "Business" in interest:
+            st.success("💼 Best Options: BBA, B.Com, MBA")
+            st.info("👉 Careers: Manager, Entrepreneur, Analyst")
+
+        elif "Creative" in interest:
+            st.success("🎨 Best Options: Design, Animation, Media")
+            st.info("👉 Careers: Graphic Designer, UI/UX Designer")
+
+        elif "Government" in interest:
+            st.success("🏛️ Best Path: Degree + UPSC / SSC")
+            st.info("👉 Careers: IAS, IPS, Govt Officer")
+
+        elif "Teaching" in interest:
+            st.success("📚 Best Options: BA/B.Sc + B.Ed")
+            st.info("👉 Careers: Teacher, Lecturer")
+
+        elif "Defense" in interest:
+            st.success("🪖 Best Path: NDA, CDS")
+            st.info("👉 Careers: Army, Navy, Airforce")
+
+        elif "Sports" in interest:
+            st.success("🏃 Best Options: Sports Academy")
+            st.info("👉 Careers: Athlete, Coach")
+
+        elif "Agriculture" in interest:
+            st.success("🌾 Best Options: B.Sc Agriculture")
+            st.info("👉 Careers: Agri Officer, Farming Business")
+
+        elif "Hospitality" in interest:
+            st.success("🏨 Best Options: Hotel Management")
+            st.info("👉 Careers: Hotel Manager, Tourism")
+
+        # -------- EXTRA SUGGESTION --------
+        st.markdown("### 💡 Smart Suggestion")
+
+        if work_style == "Government Job 🏛️":
+            st.warning("👉 Focus on Government Exams + Degree")
+
+        elif work_style == "Business / Startup 🚀":
+            st.warning("👉 Learn skills + Start small business")
+
+        elif work_style == "High Salary Job 💰":
+            st.warning("👉 Choose IT / AI / Management fields")
+
+        elif work_style == "Work-Life Balance 😊":
+            st.warning("👉 Consider stable jobs like Teaching / Govt")
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
     del st.session_state["user"]
