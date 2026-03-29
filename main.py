@@ -31,7 +31,7 @@ def save_users(users):
 
 users = load_users()
 
-# ------------------ ANIMATION ------------------
+# ------------------ TITLE ------------------
 def show_title(text):
     st.markdown(f"<div class='big-title'>{text}</div>", unsafe_allow_html=True)
 
@@ -84,9 +84,6 @@ if menu == "🏠 Home":
 # ------------------ AFTER 10TH ------------------
 elif menu == "🎓 After 10th":
     show_title("🎓 Career Options After 10th")
-    st.info("Choose based on Interest + Time + Career Goals")
-
-    st.markdown("<div class='section'>Streams & Paths</div>", unsafe_allow_html=True)
 
     st.markdown("""
 - Intermediate (Science, Commerce, Arts)
@@ -108,119 +105,127 @@ elif menu == "📘 After 12th":
 
     st.markdown("<div class='section'>🎯 Higher Studies</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='sub'>🔬 Science Students</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub'>🔬 Science</div>", unsafe_allow_html=True)
     st.markdown("""
-**MPC:**
-- B.Tech (CSE, AI, Mechanical, Civil)
-- BCA
-- NDA
-
-**BiPC:**
-- MBBS
-- BDS
-- Pharmacy
-- Nursing
-- Biotechnology
+- B.Tech, BCA, NDA  
+- MBBS, BDS, Pharmacy  
 """)
 
     st.markdown("<div class='sub'>💼 Commerce</div>", unsafe_allow_html=True)
     st.markdown("""
-- B.Com
-- BBA
-- CA, CS, CMA
-- Banking & Finance
+- B.Com, BBA  
+- CA, CS, CMA  
 """)
 
     st.markdown("<div class='sub'>🎨 Arts</div>", unsafe_allow_html=True)
     st.markdown("""
-- BA
-- LLB
-- Journalism
-- Psychology
+- BA, LLB  
+- Journalism, Psychology  
 """)
 
-    st.markdown("<div class='section'>🪖 Government Jobs</div>", unsafe_allow_html=True)
-    st.markdown("""
-- NDA (Army/Navy/Airforce)
-- SSC CHSL / MTS
-- Railways (TC, Clerk)
-- Police Jobs
-- Forest Guard, Post Office
-""")
-
-    st.markdown("<div class='section'>🛠️ Professional Courses</div>", unsafe_allow_html=True)
-    st.markdown("""
-- IT: Web Dev, Data Science, Cyber Security
-- Paramedical
-- Hotel Management
-- Animation & Design
-- Law (LLB)
-""")
-
-    st.markdown("<div class='section'>🚀 Alternative Careers</div>", unsafe_allow_html=True)
-    st.markdown("""
-- Business / Startup
-- Freelancing
-- Content Creation
-- Sports
-""")
-
-    st.markdown("<div class='section'>📊 Comparison</div>", unsafe_allow_html=True)
-    st.table({
-        "Path": ["B.Tech", "Medical", "Govt Jobs", "Creative", "Business"],
-        "Growth": ["Very High", "Very High", "Medium", "High", "Unlimited"],
-        "Difficulty": ["High", "Very High", "Medium", "Skill-based", "Risky"]
-    })
-
-    st.markdown("<div class='section'>🎯 Smart Government Path</div>", unsafe_allow_html=True)
-    st.success("""
-12th → Graduation → UPSC / SSC  
-OR  
-12th → SSC / Defense  
-OR  
-12th → Degree → Banking / Railways
-""")
-
-# ------------------ CAREER SECTORS ------------------
+# ------------------ CAREER SECTORS (UPDATED 🔥) ------------------
 elif menu == "💼 Career Sectors":
-    show_title("💼 Career Sectors")
+    show_title("💼 Career Sectors – Detailed Roadmap")
 
-    col1, col2 = st.columns(2)
+    # -------- GOVERNMENT --------
+    st.markdown("<div class='section'>🏛️ GOVERNMENT SECTOR</div>", unsafe_allow_html=True)
 
-    with col1:
-        st.subheader("🏛️ Government")
-        st.write("UPSC, Banking, Railways, Defense")
+    st.markdown("### 1️⃣ UPSC (IAS, IPS, IFS)")
+    st.markdown("""
+📚 Study: Graduation + History, Polity, Economy  
+📝 Exams: Prelims → Mains → Interview  
+🧠 Skills: Reading, Writing, Analysis  
+""")
 
-    with col2:
-        st.subheader("🏢 Private")
-        st.write("Software, Marketing, Business, Design")
+    st.markdown("### 2️⃣ Banking (IBPS, SBI)")
+    st.markdown("""
+📚 Study: Maths, Reasoning, English  
+📝 Exams: IBPS PO / Clerk  
+🧠 Skills: Speed + Accuracy  
+""")
 
-# ------------------ AI RECOMMENDATION ------------------
+    st.markdown("### 3️⃣ Railways")
+    st.markdown("""
+📚 Study: Maths, Science, GK  
+📝 Exams: RRB NTPC, Group D  
+👉 Jobs: Clerk, TC, Station Master  
+""")
+
+    st.markdown("### 4️⃣ Defense")
+    st.markdown("""
+📚 Study: 12th Science  
+📝 Exams: NDA, CDS  
+🧠 Skills: Fitness, Discipline  
+""")
+
+    st.markdown("### 5️⃣ SSC Jobs")
+    st.markdown("""
+📚 Study: Maths, Reasoning, English  
+📝 Exams: SSC CGL, CHSL  
+👉 Jobs: Income Tax Officer, Clerk  
+""")
+
+    # -------- PRIVATE --------
+    st.markdown("<div class='section'>🏢 PRIVATE SECTOR</div>", unsafe_allow_html=True)
+
+    st.markdown("### 💻 IT Sector")
+    st.markdown("""
+📚 B.Tech / BCA  
+Skills: Python, AI, Web Dev  
+Jobs: Developer, Data Scientist  
+🔥 High demand  
+""")
+
+    st.markdown("### 📢 Marketing")
+    st.markdown("""
+📚 BBA → MBA  
+Skills: Communication, Sales  
+Jobs: Marketing Manager  
+""")
+
+    st.markdown("### 💼 Business")
+    st.markdown("""
+Skills: Planning, Finance  
+👉 Startup / Online business  
+💰 Unlimited growth  
+""")
+
+    st.markdown("### 🎨 Creative")
+    st.markdown("""
+Skills: Design, Animation  
+Jobs: UI/UX, Designer  
+""")
+
+    st.markdown("### 📊 Data Field")
+    st.markdown("""
+Skills: Python, SQL  
+Jobs: Data Analyst  
+""")
+
+    # -------- FLOW --------
+    st.markdown("<div class='section'>🎯 Career Flow</div>", unsafe_allow_html=True)
+    st.info("Government: Degree → Exam → Job")
+    st.info("Private: Skills → Job → Growth")
+
+    # -------- STRATEGY --------
+    st.markdown("<div class='section'>💡 Best Strategy</div>", unsafe_allow_html=True)
+
+    st.success("""
+🔥 B.Tech → Job + Govt Prep  
+🔥 BA/B.Com → UPSC/SSC  
+🔥 AI/ML → High demand career  
+""")
+
+# ------------------ AI RECOMMEND ------------------
 elif menu == "🤖 AI Recommendation":
     show_title("🤖 Career Recommendation")
 
     interest = st.selectbox("Select Interest", [
-        "Technology", "Biology", "Business", "Arts", "Creative", "Sports"
+        "Technology", "Biology", "Business", "Creative", "Sports"
     ])
 
     if st.button("Get Recommendation"):
-        if interest == "Technology":
-            st.success("Software, AI, Data Science")
-
-        elif interest == "Biology":
-            st.success("Doctor, Pharmacy, Healthcare")
-
-        elif interest == "Business":
-            st.success("CA, MBA, Entrepreneurship")
-
-        elif interest == "Creative":
-            st.success("Design, Animation, Media")
-
-        elif interest == "Sports":
-            st.success("Athlete, Coach")
-
-        else:
-            st.success("UPSC, Law, Govt Jobs")
+        st.success(f"Best career for {interest} 🎯")
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
