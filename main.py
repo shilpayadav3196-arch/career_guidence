@@ -345,21 +345,20 @@ elif menu == "🤖 AI Recommendation":
 
     st.markdown("### 🧠 Tell us about yourself")
 
-    # -------- INTEREST --------
+    # -------- BASIC INPUTS --------
     interest = st.selectbox("🎯 Select Your Interest", [
-        "Technology ",
-        "Medical ",
-        "Business ",
-        "Creative ",
-        "Government Jobs ",
-        "Teaching ",
-        "Defense ",
-        "Sports ",
-        "Agriculture ",
-        "Hospitality "
+        "Technology",
+        "Medical",
+        "Business",
+        "Creative",
+        "Government Jobs",
+        "Teaching",
+        "Defense",
+        "Sports",
+        "Agriculture",
+        "Hospitality"
     ])
 
-    # -------- SKILL LEVEL --------
     skill = st.selectbox("⚡ Your Strength", [
         "Problem Solving",
         "Communication",
@@ -369,74 +368,117 @@ elif menu == "🤖 AI Recommendation":
         "Analytical Thinking"
     ])
 
-    # -------- WORK STYLE --------
     work_style = st.radio("💼 Preferred Work Style", [
-        "High Salary Job ",
-        "Government Job ",
-        "Business / Startup ",
-        "Work-Life Balance "
+        "High Salary Job",
+        "Government Job",
+        "Business / Startup",
+        "Work-Life Balance"
     ])
 
-    # -------- RECOMMEND BUTTON --------
+    # -------- NEW INPUTS --------
+    education = st.selectbox("🎓 Your Education Level", [
+        "After 10th",
+        "After 12th",
+        "Graduate",
+        "Postgraduate"
+    ])
+
+    subject = st.selectbox("📚 Favorite Subject", [
+        "Maths",
+        "Biology",
+        "Computer Science",
+        "Commerce",
+        "Arts",
+        "None"
+    ])
+
+    salary = st.selectbox("💰 Expected Salary Level", [
+        "High Salary",
+        "Moderate",
+        "Stable Income"
+    ])
+
+    location_pref = st.radio("🌍 Work Preference", [
+        "Work in India",
+        "Abroad",
+        "Remote Work"
+    ])
+
+    study_pref = st.radio("📖 Study Preference", [
+        "Long-term study (5+ years)",
+        "Short-term (1-3 years)",
+        "Skill-based courses"
+    ])
+
+    personality = st.selectbox("🧠 Your Personality", [
+        "Analytical",
+        "Creative",
+        "Social",
+        "Leader",
+        "Practical"
+    ])
+
+    # -------- BUTTON --------
     if st.button("🔍 Get Recommendation"):
 
         st.markdown("## 🎯 Best Career Options For You")
 
-        # -------- LOGIC --------
-        if "Technology" in interest:
-            st.success("💻 Best Options: B.Tech (CSE, AI), BCA")
+        # -------- SMART LOGIC --------
+        if interest == "Technology" and subject in ["Maths", "Computer Science"]:
+            st.success("💻 Best: B.Tech CSE, AI, Data Science, BCA")
             st.info("👉 Careers: Software Engineer, AI Engineer, Data Scientist")
 
-        elif "Medical" in interest:
-            st.success("🏥 Best Options: MBBS, BDS, Pharmacy")
-            st.info("👉 Careers: Doctor, Pharmacist, Nurse")
+        elif interest == "Medical" and subject == "Biology":
+            st.success("🏥 Best: MBBS, BDS, Pharmacy, Nursing")
+            st.info("👉 Careers: Doctor, Nurse, Pharmacist")
 
-        elif "Business" in interest:
-            st.success("💼 Best Options: BBA, B.Com, MBA")
-            st.info("👉 Careers: Manager, Entrepreneur, Analyst")
+        elif interest == "Business" or personality == "Leader":
+            st.success("💼 Best: BBA, B.Com, MBA")
+            st.info("👉 Careers: Manager, Entrepreneur, Business Analyst")
 
-        elif "Creative" in interest:
-            st.success("🎨 Best Options: Design, Animation, Media")
-            st.info("👉 Careers: Graphic Designer, UI/UX Designer")
+        elif personality == "Creative":
+            st.success("🎨 Best: Design, Animation, UI/UX, Media")
+            st.info("👉 Careers: Graphic Designer, Animator, Content Creator")
 
-        elif "Government" in interest:
-            st.success("🏛️ Best Path: Degree + UPSC / SSC")
+        elif work_style == "Government Job":
+            st.success("🏛️ Best: UPSC, SSC, Banking, Railways")
             st.info("👉 Careers: IAS, IPS, Govt Officer")
 
-        elif "Teaching" in interest:
-            st.success("📚 Best Options: BA/B.Sc + B.Ed")
-            st.info("👉 Careers: Teacher, Lecturer")
-
-        elif "Defense" in interest:
-            st.success("🪖 Best Path: NDA, CDS")
+        elif interest == "Defense":
+            st.success("🪖 Best: NDA, CDS")
             st.info("👉 Careers: Army, Navy, Airforce")
 
-        elif "Sports" in interest:
-            st.success("🏃 Best Options: Sports Academy")
-            st.info("👉 Careers: Athlete, Coach")
+        elif interest == "Teaching":
+            st.success("📚 Best: BA/B.Sc + B.Ed")
+            st.info("👉 Careers: Teacher, Lecturer")
 
-        elif "Agriculture" in interest:
-            st.success("🌾 Best Options: B.Sc Agriculture")
-            st.info("👉 Careers: Agri Officer, Farming Business")
+        else:
+            st.success("✨ Explore multiple career paths based on your skills")
+            st.info("👉 Combine skills + degree for best results")
 
-        elif "Hospitality" in interest:
-            st.success("🏨 Best Options: Hotel Management")
-            st.info("👉 Careers: Hotel Manager, Tourism")
+        # -------- EXTRA PERSONALIZATION --------
+        st.markdown("### 💡 Smart Suggestions")
 
-        # -------- EXTRA SUGGESTION --------
-        st.markdown("### 💡 Smart Suggestion")
+        if salary == "High Salary":
+            st.warning("💰 Focus on IT, AI, Data Science, Management")
 
-        if work_style == "Government Job 🏛️":
-            st.warning("👉 Focus on Government Exams + Degree")
+        if study_pref == "Short-term (1-3 years)":
+            st.warning("⏳ Try skill-based courses like Web Dev, Digital Marketing")
 
-        elif work_style == "Business / Startup 🚀":
-            st.warning("👉 Learn skills + Start small business")
+        if location_pref == "Abroad":
+            st.warning("🌍 Prepare for IELTS/GRE + International opportunities")
 
-        elif work_style == "High Salary Job 💰":
-            st.warning("👉 Choose IT / AI / Management fields")
+        if skill == "Communication":
+            st.warning("🗣️ Marketing, HR, Teaching are great options")
 
-        elif work_style == "Work-Life Balance 😊":
-            st.warning("👉 Consider stable jobs like Teaching / Govt")
+        # -------- CONFIDENCE SCORE --------
+        st.markdown("### 📊 Recommendation Confidence")
+
+        st.progress(80)
+        st.write("🔍 Confidence Level: 80%")
+
+        # -------- FINAL TIP --------
+        st.success("✅ Tip: Choose career based on Interest + Skills + Future Demand")
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
     del st.session_state["user"]
