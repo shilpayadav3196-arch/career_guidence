@@ -37,29 +37,53 @@ def show_title(text):
 
 # ------------------ LOGIN ------------------
 def login_signup():
-    show_title("🔐 Login / Signup")
+    st.markdown("""
+    <style>
+    .login-box {
+        background-color: #1e1e2f;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+    }
+    .title {
+        text-align:center;
+        font-size:30px;
+        font-weight:bold;
+        color:#4CAF50;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    option = st.radio("Choose Option", ["Login", "Signup"])
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    st.markdown("<div class='title'>🎯 Career Guidance Login</div>", unsafe_allow_html=True)
 
-    if option == "Signup":
-        if st.button("Create Account"):
-            if username in users:
-                st.error("User already exists!")
-            else:
-                users[username] = password
-                save_users(users)
-                st.success("Account created successfully!")
+    col1, col2, col3 = st.columns([1,2,1])
 
-    if option == "Login":
-        if st.button("Login"):
-            if username in users and users[username] == password:
-                st.session_state["user"] = username
-                st.rerun()
-            else:
-                st.error("Invalid credentials")
+    with col2:
+        st.markdown("<div class='login-box'>", unsafe_allow_html=True)
 
+        option = st.radio("", ["Login", "Signup"])
+
+        username = st.text_input("👤 Username")
+        password = st.text_input("🔑 Password", type="password")
+
+        if option == "Signup":
+            if st.button("🚀 Create Account", use_container_width=True):
+                if username in users:
+                    st.error("User already exists!")
+                else:
+                    users[username] = password
+                    save_users(users)
+                    st.success("Account created!")
+
+        if option == "Login":
+            if st.button("🔓 Login", use_container_width=True):
+                if username in users and users[username] == password:
+                    st.session_state["user"] = username
+                    st.rerun()
+                else:
+                    st.error("Invalid credentials")
+
+        st.markdown("</div>", unsafe_allow_html=True)
 # ------------------ AUTH ------------------
 if "user" not in st.session_state:
     login_signup()
