@@ -12,68 +12,87 @@ st.markdown("""
     background: linear-gradient(135deg, #1f1c2c, #928dab);
     color: white;
 }
-.card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    margin: 10px 0;
-}
-.title {
-    font-size: 36px;
-    text-align:center;
-    font-weight:bold;
+
+/* Split layout */
+.login-main {
+    display: flex;
+    height: 100vh;
 }
 
-/* Buttons */
-.stButton>button {
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
-    color: white;
-    border-radius: 10px;
-    height: 3em;
-}
-
-/* -------- LOGIN FIX -------- */
-.login-wrapper {
+/* Left side */
+.login-left {
+    flex: 1;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 85vh;
+    flex-direction: column;
+    color: white;
 }
-.login-card {
-    background: rgba(255, 255, 255, 0.12);
-    padding: 30px 25px;
-    border-radius: 15px;
-    backdrop-filter: blur(12px);
-    width: 320px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+.login-left h1 {
+    font-size: 40px;
 }
-.login-title {
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-.login-sub {
-    text-align: center;
-    font-size: 13px;
-    opacity: 0.7;
-    margin-bottom: 15px;
+.login-left p {
+    font-size: 16px;
+    opacity: 0.8;
 }
 
-/* Fix input width */
+/* Right side */
+.login-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+.login-card {
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    width: 350px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* Title */
+.login-title {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
 div[data-baseweb="input"] {
     width: 100% !important;
 }
 
-/* Center radio */
+/* Button */
+.stButton > button {
+    width: 100%;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    border-radius: 10px;
+}
+
+/* Radio center */
 .stRadio > div {
     justify-content: center;
 }
 
-/* Full width button */
-.stButton > button {
-    width: 100%;
+/* Cards */
+.card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 10px 0;
+}
+
+/* Title */
+.title {
+    font-size: 36px;
+    text-align:center;
+    font-weight:bold;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -93,11 +112,20 @@ users = load_users()
 
 # ------------------ LOGIN ------------------
 def login():
-    st.markdown("<div class='login-wrapper'>", unsafe_allow_html=True)
-    st.markdown("<div class='login-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='login-main'>", unsafe_allow_html=True)
 
-    st.markdown("<div class='login-title'>🎯 Career Guidance</div>", unsafe_allow_html=True)
-    st.markdown("<div class='login-sub'>Welcome back! Please login</div>", unsafe_allow_html=True)
+    # LEFT SIDE
+    st.markdown("""
+    <div class='login-left'>
+        <h1>🎯 Career Guidance</h1>
+        <p>Plan your future with AI-powered guidance</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # RIGHT SIDE
+    st.markdown("<div class='login-right'><div class='login-card'>", unsafe_allow_html=True)
+
+    st.markdown("<div class='login-title'>🔐 Login</div>", unsafe_allow_html=True)
 
     option = st.radio("", ["Login", "Signup"], horizontal=True)
 
@@ -109,9 +137,9 @@ def login():
             if user and pwd:
                 users[user] = pwd
                 save_users(users)
-                st.success("✅ Account created")
+                st.success("Account created")
             else:
-                st.warning("⚠️ Fill all fields")
+                st.warning("Fill all fields")
 
     if option == "Login":
         if st.button("🚀 Login"):
@@ -119,9 +147,9 @@ def login():
                 st.session_state["user"] = user
                 st.rerun()
             else:
-                st.error("❌ Invalid username or password")
+                st.error("Invalid login")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div></div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 if "user" not in st.session_state:
@@ -147,18 +175,18 @@ if menu == "🏠 Home":
 elif menu == "🎓 After 10th":
     st.markdown("<div class='title'>🎓 After 10th Guide</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='card'>1️. Intermediate (Science, Commerce, Arts)</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>2️. Diploma (Engineering fields)</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>3️. ITI (Technical jobs)</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>4️. Paramedical (Healthcare)</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>5️. Agriculture</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>6️. Vocational Courses</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>7️. Creative Fields</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>8️. Hotel Management</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>9️. Sports</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>10. Defense</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>1️1️. Open School</div>", unsafe_allow_html=True)
-    st.markdown("<div class='card'>1️2️. Business</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>1️⃣ Intermediate (Science, Commerce, Arts)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>2️⃣ Diploma (Engineering fields)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>3️⃣ ITI (Technical jobs)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>4️⃣ Paramedical (Healthcare)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>5️⃣ Agriculture</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>6️⃣ Vocational Courses</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>7️⃣ Creative Fields</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>8️⃣ Hotel Management</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>9️⃣ Sports</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>🔟 Defense</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>1️⃣1️⃣ Open School</div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'>1️⃣2️⃣ Business</div>", unsafe_allow_html=True)
 
 # ------------------ AFTER 12TH ------------------
 elif menu == "📘 After 12th":
