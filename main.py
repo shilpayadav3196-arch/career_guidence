@@ -6,7 +6,7 @@ import time
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(page_title="Career Guidance System", page_icon="🎯", layout="wide")
 
-# ------------------ SIMPLE USER DATABASE ------------------
+# ------------------ USER DATABASE ------------------
 USER_FILE = "users.json"
 
 def load_users():
@@ -55,7 +55,7 @@ def login_signup():
             else:
                 st.error("Invalid credentials")
 
-# ------------------ MAIN APP ------------------
+# ------------------ AUTH CHECK ------------------
 if "user" not in st.session_state:
     login_signup()
     st.stop()
@@ -75,57 +75,58 @@ menu = st.sidebar.radio("Menu", [
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
     typing_animation("🎯 AI Career Guidance System")
-
-    st.write("""
-    This system helps students choose the best career path based on their interests.
-    """)
+    st.write("This system helps students choose the best career path based on their interests.")
 
 # ------------------ AFTER 10TH ------------------
 elif menu == "🎓 After 10th":
-    st.title("🎓 Career Options After 10th")
+    st.title("🎓 Career Options After 10th (Complete Guide)")
 
-    st.subheader("1️⃣ Intermediate (11th & 12th)")
+    st.header("1️⃣ Intermediate (11th & 12th)")
+    st.write("Streams: Science, Commerce, Arts")
+    st.success("Best for long-term careers")
 
-    st.markdown("### 🔬 Science Stream")
-    st.write("""
-    Subjects: Physics, Chemistry, Maths/Biology
+    st.header("2️⃣ Polytechnic Diploma")
+    st.write("Fields: Mechanical, Civil, AI, Electronics")
 
-    Careers:
-    - Engineering (B.Tech)
-    - AI/ML, Data Science
-    - NDA
-    - MBBS, BDS, Pharmacy
+    st.header("3️⃣ ITI")
+    st.write("Trades: Electrician, CNC, AC Technician")
 
-    Skills: Logical thinking, problem solving
-    """)
+    st.header("4️⃣ Paramedical Courses")
+    st.write("MLT, X-Ray, Dialysis Technician")
 
-    st.markdown("### 💼 Commerce Stream")
-    st.write("""
-    Careers:
-    - CA, CS
-    - BBA, MBA
-    - Banking & Finance
-    """)
+    st.header("5️⃣ Agriculture")
+    st.write("Diploma in Agriculture, Fisheries")
 
-    st.markdown("### 🎨 Arts Stream")
-    st.write("""
-    Careers:
-    - UPSC (IAS, IPS)
-    - Lawyer
-    - Journalism
-    """)
+    st.header("6️⃣ Vocational Courses")
+    st.write("Retail, Tourism, Food Processing")
 
-    st.subheader("2️⃣ Diploma")
-    st.write("Mechanical, Civil, Computer Engineering")
+    st.header("7️⃣ Creative Fields")
+    st.write("Animation, UI/UX, Fashion Design")
 
-    st.subheader("3️⃣ ITI")
-    st.write("Electrician, Fitter, Mechanic")
+    st.header("8️⃣ Hotel Management")
+    st.write("Hotel, Catering, Culinary Arts")
 
-    st.subheader("4️⃣ Skill Courses")
-    st.write("Digital Marketing, Web Dev, Animation")
+    st.header("9️⃣ Sports")
+    st.write("Athlete, Coach, Trainer")
 
-    st.subheader("5️⃣ Defense")
-    st.write("Army, Navy, Air Force")
+    st.header("🔟 Defense")
+    st.write("Army, Navy, Sainik Schools")
+
+    st.header("1️⃣1️⃣ Open Schooling")
+    st.write("NIOS")
+
+    st.header("1️⃣2️⃣ Business")
+    st.write("Startups, Freelancing")
+
+    st.header("📊 Comparison Table")
+    st.table({
+        "Path": ["Intermediate", "Diploma", "ITI", "Paramedical"],
+        "Duration": ["2 yrs", "3 yrs", "1–2 yrs", "1–3 yrs"],
+        "Growth": ["High", "High", "Medium", "High"]
+    })
+
+    st.header("💡 Best Path for AI/ML")
+    st.success("10th → Science → B.Tech → AI Job")
 
 # ------------------ AFTER 12TH ------------------
 elif menu == "📘 After 12th":
@@ -134,27 +135,13 @@ elif menu == "📘 After 12th":
     stream = st.selectbox("Choose Stream", ["Science", "Commerce", "Arts"])
 
     if stream == "Science":
-        st.write("""
-        - Engineering (CSE, AI/ML)
-        - MBBS
-        - Data Science
-        - Cyber Security
-        """)
+        st.write("Engineering, MBBS, Data Science, AI")
 
     elif stream == "Commerce":
-        st.write("""
-        - CA
-        - B.Com
-        - MBA
-        - Banking
-        """)
+        st.write("CA, B.Com, MBA, Banking")
 
     elif stream == "Arts":
-        st.write("""
-        - UPSC
-        - Law
-        - Journalism
-        """)
+        st.write("UPSC, Law, Journalism")
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
@@ -164,41 +151,30 @@ elif menu == "💼 Career Sectors":
 
     with col1:
         st.subheader("🏛️ Government Jobs")
-        st.write("""
-        - UPSC (IAS, IPS)
-        - Banking (SBI, RBI)
-        - Railways
-        - Defense (Army/Navy)
-        """)
+        st.write("UPSC, Banking, Railways, Defense")
 
     with col2:
         st.subheader("🏢 Private Jobs")
-        st.write("""
-        - Software Engineer
-        - Data Scientist
-        - Digital Marketing
-        - Business Jobs
-        """)
+        st.write("Software, Data Science, Marketing")
 
 # ------------------ AI RECOMMENDATION ------------------
 elif menu == "🤖 AI Recommendation":
     st.title("🤖 Career Recommendation")
 
-    interest = st.selectbox("Your Interest", ["Technology", "Biology", "Business", "Arts"])
-    skill = st.selectbox("Your Skill Level", ["High", "Medium", "Low"])
+    interest = st.selectbox("Interest", ["Technology", "Biology", "Business", "Arts"])
 
     if st.button("Get Recommendation"):
         if interest == "Technology":
-            st.success("👉 Recommended: AI Engineer / Software Developer")
+            st.success("AI Engineer / Developer")
 
         elif interest == "Biology":
-            st.success("👉 Recommended: Doctor / Pharmacy")
+            st.success("Doctor / Healthcare")
 
         elif interest == "Business":
-            st.success("👉 Recommended: CA / MBA")
+            st.success("CA / MBA")
 
         else:
-            st.success("👉 Recommended: UPSC / Law")
+            st.success("UPSC / Law")
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
