@@ -209,4 +209,10 @@ elif st.session_state.page == "result":
 
     with col2:
         if st.button("🏠 Restart"):
-            go("login")
+            go("login")                                             
+if user[col] in encoders[col].classes_:
+    value = encoders[col].transform([user[col]])[0]
+else:
+    value = -1
+
+input_data.append(value)
