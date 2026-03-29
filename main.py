@@ -1,218 +1,206 @@
 import streamlit as st
-import pandas as pd
-import sqlite3
-import joblib
+import json
 import os
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
+import time
 
-# -------------------- CONFIG --------------------
-st.set_page_config(page_title="AI Career Guidance", layout="wide")
+# ------------------ PAGE CONFIG ------------------
+st.set_page_config(page_title="Career Guidance System", page_icon="🎯", layout="wide")
 
-# -------------------- DATABASE --------------------
-conn = sqlite3.connect("users.db")
-c = conn.cursor()
-c.execute("CREATE TABLE IF NOT EXISTS users (username TEXT, password TEXT)")
+# ------------------ SIMPLE USER DATABASE ------------------
+USER_FILE = "users.json"
 
-def add_user(u, p):
-    c.execute("INSERT INTO users VALUES (?,?)", (u, p))
-    conn.commit()
+def load_users():
+    if os.path.exists(USER_FILE):
+        with open(USER_FILE, "r") as f:
+            return json.load(f)
+    return {}
 
-def login_user(u, p):
-    c.execute("SELECT * FROM users WHERE username=? AND password=?", (u, p))
-    return c.fetchall()
+def save_users(users):
+    with open(USER_FILE, "w") as f:
+        json.dump(users, f)
 
-# -------------------- LOAD DATA --------------------
-FILE = "final_career_dataset_5000.csv"
-data = pd.read_csv(FILE)
+users = load_users()
 
-# -------------------- TRAIN MODEL --------------------
-if not os.path.exists("model.pkl"):
+# ------------------ ANIMATION ------------------
+def typing_animation(text):
+    placeholder = st.empty()
+    for i in range(len(text) + 1):
+        placeholder.markdown(f"### {text[:i]}")
+        time.sleep(0.02)
 
-    data.fillna(method="ffill", inplace=True)
+# ------------------ LOGIN / SIGNUP ------------------
+def login_signup():
+    st.title("🔐 Login / Signup")
 
-    encoders = {}
-    for col in data.columns:
-        if data[col].dtype == "object":
-            le = LabelEncoder()
-            data[col] = le.fit_transform(data[col])
-            encoders[col] = le
-
-    X = data.drop(["Career", "Sector"], axis=1)
-    y = data["Career"]
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-
-    model = DecisionTreeClassifier()
-    model.fit(X_train, y_train)
-
-    accuracy = model.score(X_test, y_test)
-
-    joblib.dump(model, "model.pkl")
-    joblib.dump(encoders, "encoders.pkl")
-    joblib.dump(accuracy, "accuracy.pkl")
-
-# -------------------- LOAD MODEL --------------------
-model = joblib.load("model.pkl")
-encoders = joblib.load("encoders.pkl")
-accuracy = joblib.load("accuracy.pkl")
-
-# -------------------- SESSION --------------------
-if "page" not in st.session_state:
-    st.session_state.page = "login"
-
-if "user_input" not in st.session_state:
-    st.session_state.user_input = {}
-
-# -------------------- NAVIGATION --------------------
-def go(page):
-    st.session_state.page = page
-    st.rerun()
-
-# -------------------- LOGIN PAGE --------------------
-if st.session_state.page == "login":
-
-    st.title("🔐 Login / Sign Up")
-
-    menu = st.radio("", ["Login", "Sign Up"], horizontal=True)
+    option = st.radio("Select Option", ["Login", "Signup"])
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    if menu == "Sign Up":
-        if st.button("Register"):
-            add_user(username, password)
-            st.success("Account Created ✅")
-
-    else:
-        if st.button("Login"):
-            if login_user(username, password):
-                st.success("Login Successful ✅")
-                go("dashboard")
+    if option == "Signup":
+        if st.button("Create Account"):
+            if username in users:
+                st.error("User already exists!")
             else:
-                st.error("Invalid Credentials ❌")
+                users[username] = password
+                save_users(users)
+                st.success("Account created successfully!")
 
-# -------------------- DASHBOARD --------------------
-elif st.session_state.page == "dashboard":
+    if option == "Login":
+        if st.button("Login"):
+            if username in users and users[username] == password:
+                st.session_state["user"] = username
+                st.success("Login successful!")
+                st.rerun()
+            else:
+                st.error("Invalid credentials")
 
-    st.title("📊 Dashboard")
-    st.success("Welcome! Enter your details 👇")
+# ------------------ MAIN APP ------------------
+if "user" not in st.session_state:
+    login_signup()
+    st.stop()
+
+# ------------------ SIDEBAR ------------------
+st.sidebar.title(f"👋 Welcome {st.session_state['user']}")
+
+menu = st.sidebar.radio("Menu", [
+    "🏠 Home",
+    "🎓 After 10th",
+    "📘 After 12th",
+    "💼 Career Sectors",
+    "🤖 AI Recommendation",
+    "🚪 Logout"
+])
+
+# ------------------ HOME ------------------
+if menu == "🏠 Home":
+    typing_animation("🎯 AI Career Guidance System")
+
+    st.write("""
+    This system helps students choose the best career path based on their interests.
+    """)
+
+# ------------------ AFTER 10TH ------------------
+elif menu == "🎓 After 10th":
+    st.title("🎓 Career Options After 10th")
+
+    st.subheader("1️⃣ Intermediate (11th & 12th)")
+
+    st.markdown("### 🔬 Science Stream")
+    st.write("""
+    Subjects: Physics, Chemistry, Maths/Biology
+
+    Careers:
+    - Engineering (B.Tech)
+    - AI/ML, Data Science
+    - NDA
+    - MBBS, BDS, Pharmacy
+
+    Skills: Logical thinking, problem solving
+    """)
+
+    st.markdown("### 💼 Commerce Stream")
+    st.write("""
+    Careers:
+    - CA, CS
+    - BBA, MBA
+    - Banking & Finance
+    """)
+
+    st.markdown("### 🎨 Arts Stream")
+    st.write("""
+    Careers:
+    - UPSC (IAS, IPS)
+    - Lawyer
+    - Journalism
+    """)
+
+    st.subheader("2️⃣ Diploma")
+    st.write("Mechanical, Civil, Computer Engineering")
+
+    st.subheader("3️⃣ ITI")
+    st.write("Electrician, Fitter, Mechanic")
+
+    st.subheader("4️⃣ Skill Courses")
+    st.write("Digital Marketing, Web Dev, Animation")
+
+    st.subheader("5️⃣ Defense")
+    st.write("Army, Navy, Air Force")
+
+# ------------------ AFTER 12TH ------------------
+elif menu == "📘 After 12th":
+    st.title("📘 Career Options After 12th")
+
+    stream = st.selectbox("Choose Stream", ["Science", "Commerce", "Arts"])
+
+    if stream == "Science":
+        st.write("""
+        - Engineering (CSE, AI/ML)
+        - MBBS
+        - Data Science
+        - Cyber Security
+        """)
+
+    elif stream == "Commerce":
+        st.write("""
+        - CA
+        - B.Com
+        - MBA
+        - Banking
+        """)
+
+    elif stream == "Arts":
+        st.write("""
+        - UPSC
+        - Law
+        - Journalism
+        """)
+
+# ------------------ CAREER SECTORS ------------------
+elif menu == "💼 Career Sectors":
+    st.title("💼 Public vs Private Sector")
 
     col1, col2 = st.columns(2)
 
     with col1:
-        name = st.text_input("Name")
-        marks = st.slider("Marks (%)", 0, 100)
-        iq = st.slider("IQ", 80, 150)
-
-        stage = st.selectbox("Study Stage", [
-            "After 10th", "After 12th", "Graduate"
-        ])
+        st.subheader("🏛️ Government Jobs")
+        st.write("""
+        - UPSC (IAS, IPS)
+        - Banking (SBI, RBI)
+        - Railways
+        - Defense (Army/Navy)
+        """)
 
     with col2:
-        interest = st.selectbox("Interest", [
-            "AI", "Data Science", "Web Development", "Cyber Security",
-            "Finance", "Healthcare", "Marketing", "Law", "Design", "Education"
-        ])
+        st.subheader("🏢 Private Jobs")
+        st.write("""
+        - Software Engineer
+        - Data Scientist
+        - Digital Marketing
+        - Business Jobs
+        """)
 
-        skill = st.selectbox("Skill", [
-            "Python", "ML", "HTML", "CSS", "JavaScript",
-            "Biology", "Finance", "Communication", "Design"
-        ])
+# ------------------ AI RECOMMENDATION ------------------
+elif menu == "🤖 AI Recommendation":
+    st.title("🤖 Career Recommendation")
 
-        hobby = st.selectbox("Hobby", [
-            "Coding", "Reading", "Gaming", "Sports", "Music", "Art"
-        ])
+    interest = st.selectbox("Your Interest", ["Technology", "Biology", "Business", "Arts"])
+    skill = st.selectbox("Your Skill Level", ["High", "Medium", "Low"])
 
-        personality = st.selectbox("Personality", [
-            "Introvert", "Extrovert", "Ambivert"
-        ])
+    if st.button("Get Recommendation"):
+        if interest == "Technology":
+            st.success("👉 Recommended: AI Engineer / Software Developer")
 
-        sector = st.selectbox("Preferred Sector", [
-            "Private", "Government", "Startup", "Higher Studies"
-        ])
+        elif interest == "Biology":
+            st.success("👉 Recommended: Doctor / Pharmacy")
 
-    st.info(f"📊 Model Accuracy: {accuracy*100:.2f}%")
+        elif interest == "Business":
+            st.success("👉 Recommended: CA / MBA")
 
-    if st.button("Next ➡"):
-        st.session_state.user_input = {
-            "Marks": marks,
-            "Interest": interest,
-            "Skill": skill,
-            "Hobby": hobby,
-            "Personality": personality,
-            "IQ": iq,
-            "Sector": sector,
-            "Stage": stage,
-            "Name": name
-        }
-        go("result")
-
-# -------------------- RESULT PAGE --------------------
-elif st.session_state.page == "result":
-
-    st.title("🎯 Career Result")
-
-    user = st.session_state.user_input
-
-    # Encode
-    input_data = []
-    cols = ["Marks", "Interest", "Skill", "Hobby", "Personality", "IQ"]
-
-    for col in cols:
-        if col in encoders:
-            input_data.append(encoders[col].transform([user[col]])[0])
         else:
-            input_data.append(user[col])
+            st.success("👉 Recommended: UPSC / Law")
 
-    pred = model.predict([input_data])[0]
-    prob = model.predict_proba([input_data])[0]
-
-    career = encoders["Career"].inverse_transform([pred])[0]
-
-    # Sector logic
-    if user["Sector"] == "Government":
-        career = "UPSC / Govt Job"
-        sector = "Public"
-    elif user["Sector"] == "Startup":
-        career = "Startup Founder"
-        sector = "Private"
-    elif user["Sector"] == "Higher Studies":
-        career = "M.Tech / MBA / MS"
-        sector = "Education"
-    else:
-        sector = "Private"
-
-    confidence = max(prob) * 100
-
-    st.success(f"👤 {user['Name']}, Recommended Career: {career}")
-    st.info(f"🏢 Sector: {sector}")
-    st.write(f"📊 Confidence: {confidence:.2f}%")
-
-    # -------------------- FLOW GUIDANCE --------------------
-    st.subheader("🧭 Career Path Guidance")
-
-    if user["Stage"] == "After 10th":
-        st.write("10th → Choose Stream (Science/Commerce/Arts) → 12th → Degree → Career")
-    elif user["Stage"] == "After 12th":
-        st.write("12th → Degree / Professional Course → Career")
-    else:
-        st.write("Graduation → Job / Higher Studies / Startup")
-
-    # -------------------- NAVIGATION --------------------
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("⬅ Previous"):
-            go("dashboard")
-
-    with col2:
-        if st.button("🏠 Restart"):
-            go("login")                                             
-if user[col] in encoders[col].classes_:
-    value = encoders[col].transform([user[col]])[0]
-else:
-    value = -1
-
-input_data.append(value)
+# ------------------ LOGOUT ------------------
+elif menu == "🚪 Logout":
+    del st.session_state["user"]
+    st.rerun()
