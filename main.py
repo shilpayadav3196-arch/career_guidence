@@ -24,31 +24,56 @@ st.markdown("""
     text-align:center;
     font-weight:bold;
 }
+
+/* Buttons */
 .stButton>button {
     background: linear-gradient(45deg, #00c6ff, #0072ff);
     color: white;
     border-radius: 10px;
     height: 3em;
 }
-.login-container {
+
+/* -------- LOGIN FIX -------- */
+.login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 85vh;
 }
-.login-box {
-    background: rgba(255,255,255,0.1);
-    padding: 40px;
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    width: 350px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+.login-card {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 30px 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    width: 320px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 .login-title {
-    font-size: 28px;
+    text-align: center;
+    font-size: 26px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+.login-sub {
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 15px;
+}
+
+/* Fix input width */
+div[data-baseweb="input"] {
+    width: 100% !important;
+}
+
+/* Center radio */
+.stRadio > div {
+    justify-content: center;
+}
+
+/* Full width button */
+.stButton > button {
+    width: 100%;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -68,10 +93,11 @@ users = load_users()
 
 # ------------------ LOGIN ------------------
 def login():
-    st.markdown("<div class='login-container'>", unsafe_allow_html=True)
-    st.markdown("<div class='login-box'>", unsafe_allow_html=True)
+    st.markdown("<div class='login-wrapper'>", unsafe_allow_html=True)
+    st.markdown("<div class='login-card'>", unsafe_allow_html=True)
 
     st.markdown("<div class='login-title'>🎯 Career Guidance</div>", unsafe_allow_html=True)
+    st.markdown("<div class='login-sub'>Welcome back! Please login</div>", unsafe_allow_html=True)
 
     option = st.radio("", ["Login", "Signup"], horizontal=True)
 
@@ -93,7 +119,7 @@ def login():
                 st.session_state["user"] = user
                 st.rerun()
             else:
-                st.error("❌ Invalid login")
+                st.error("❌ Invalid username or password")
 
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
@@ -168,7 +194,7 @@ elif menu == "🤖 AI Recommendation":
 
     if st.button("Get Career"):
         st.balloons()
-        st.success("Best career generated!")
+        st.success("🎯 Best career generated!")
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
