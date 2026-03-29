@@ -30,7 +30,7 @@ users = load_users()
 
 # ------------------ LOGIN ------------------
 def login():
-    st.markdown("<div class='big-title'>🔐 Login / Signup</div>", unsafe_allow_html=True)
+    st.markdown("<div class='big-title🔐 Login / Signup</div>", unsafe_allow_html=True)
 
     option = st.radio("Choose Option", ["Login", "Signup"])
     user = st.text_input("Username")
@@ -75,7 +75,7 @@ elif menu == "🎓 After 10th":
 
     st.markdown("<div class='section'>📚 1. Intermediate (11th & 12th)</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Most common and best option for higher studies  
+ Most common and best option for higher studies  
 
 Streams:
 - 🔬 Science (MPC / BiPC)
@@ -87,21 +87,21 @@ Streams:
 
     st.markdown("<div class='section'>🛠️ 2. Polytechnic Diploma</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Engineering diploma after 10th  
+ Engineering diploma after 10th  
 
 Courses:
 - Mechanical
 - Civil
 - Computer Science  
 
-✔ Benefits:
+ Benefits:
 - Early job opportunities  
 - Direct entry to B.Tech (2nd year)
 """)
 
     st.markdown("<div class='section'>⚙️ 3. ITI (Industrial Training Institute)</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Skill-based technical training  
+ Skill-based technical training  
 
 Trades:
 - Electrician
@@ -114,7 +114,7 @@ Trades:
 
     st.markdown("<div class='section'>🏥 4. Paramedical Courses</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Healthcare support roles  
+ Healthcare support roles  
 
 Courses:
 - Lab Technician
@@ -125,14 +125,14 @@ Courses:
 
     st.markdown("<div class='section'>🌾 5. Agriculture</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Farming and agri-business  
+ Farming and agri-business  
 
 ✔ Government jobs + business opportunities
 """)
 
     st.markdown("<div class='section'>🎨 6. Creative Fields</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 For creative students  
+ For creative students  
 
 Options:
 - Designing
@@ -144,28 +144,28 @@ Options:
 
     st.markdown("<div class='section'>🏨 7. Hotel Management</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Hospitality industry  
+ Hospitality industry  
 
 ✔ Jobs in hotels, tourism, airlines
 """)
 
     st.markdown("<div class='section'>🏃 8. Sports</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Physical careers  
+ Physical careers  
 
 ✔ Athlete, Coach, Trainer
 """)
 
     st.markdown("<div class='section'>🪖 9. Defense</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Army, Navy careers  
+ Army, Navy careers  
 
 ✔ Discipline + respect
 """)
 
     st.markdown("<div class='section'>💼 10. Business / Freelancing</div>", unsafe_allow_html=True)
     st.markdown("""
-👉 Start early earning  
+ Start early earning  
 
 ✔ Online work, small business
 """)
@@ -283,16 +283,16 @@ elif menu == "🤖 AI Recommendation":
 
     # -------- INTEREST --------
     interest = st.selectbox("🎯 Select Your Interest", [
-        "Technology 💻",
-        "Medical 🏥",
-        "Business 💼",
-        "Creative 🎨",
-        "Government Jobs 🏛️",
-        "Teaching 📚",
-        "Defense 🪖",
-        "Sports 🏃",
-        "Agriculture 🌾",
-        "Hospitality 🏨"
+        "Technology ",
+        "Medical ",
+        "Business ",
+        "Creative ",
+        "Government Jobs ",
+        "Teaching ",
+        "Defense ",
+        "Sports ",
+        "Agriculture ",
+        "Hospitality "
     ])
 
     # -------- SKILL LEVEL --------
@@ -307,10 +307,10 @@ elif menu == "🤖 AI Recommendation":
 
     # -------- WORK STYLE --------
     work_style = st.radio("💼 Preferred Work Style", [
-        "High Salary Job 💰",
-        "Government Job 🏛️",
-        "Business / Startup 🚀",
-        "Work-Life Balance 😊"
+        "High Salary Job ",
+        "Government Job ",
+        "Business / Startup ",
+        "Work-Life Balance "
     ])
 
     # -------- RECOMMEND BUTTON --------
