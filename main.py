@@ -30,7 +30,7 @@ users = load_users()
 
 # ------------------ LOGIN ------------------
 def login():
-    st.markdown("<div class='big-title🔐 Login / Signup</div>", unsafe_allow_html=True)
+    st.markdown("<div class='big-title Login / Signup</div>", unsafe_allow_html=True)
 
     option = st.radio("Choose Option", ["Login", "Signup"])
     user = st.text_input("Username")
