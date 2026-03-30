@@ -30,7 +30,7 @@ users = load_users()
 
 # ------------------ LOGIN ------------------
 def login():
-    st.markdown("<div class='big-title Login / Signup</div>", unsafe_allow_html=True)
+    st.markdown("<div class='big-title🔐 Login / Signup</div>", unsafe_allow_html=True)
 
     option = st.radio("Choose Option", ["Login", "Signup"])
     user = st.text_input("Username")
@@ -65,7 +65,7 @@ menu = st.sidebar.radio("Menu", [
 
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
-    st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
+    st.markdown("<div class='big-title'> Career Guidance System</div>", unsafe_allow_html=True)
     st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
 
 # ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
