@@ -73,7 +73,6 @@ def load_model():
 
     df = pd.read_csv(file_path)
 
-
     le_interest = LabelEncoder()
     le_skill = LabelEncoder()
     le_subject = LabelEncoder()
@@ -88,18 +87,18 @@ def load_model():
 
     X = df[["interest", "skill", "subject", "personality"]]
     y = df["career"]
-X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2
-    )
-   
 
-   # ✅ CORRECT INDENT
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
 
     accuracy = model.score(X_test, y_test)
 
     return model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy
+
+
+model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy = load_model()
 
 # ------------------ SIDEBAR ------------------
 menu = st.sidebar.radio("Menu", [
@@ -466,4 +465,4 @@ elif menu == "🤖 AI Recommendation":
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
     del st.session_state["user"]
-    st.rerun()
+    st.rerun()                   
