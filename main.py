@@ -241,7 +241,40 @@ Options:
 elif menu == "📘 After 12th":
 
     st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
+import plotly.express as px
 
+    # ----------- DASHBOARD FIRST (TOP) -----------
+    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
+
+    try:
+        df = pd.read_csv("career_data_1000.csv")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader("📊 Subject vs Career")
+            fig1 = px.histogram(df, x="subject", color="career",
+                                title="Subjects and Career Paths")
+            st.plotly_chart(fig1, use_container_width=True)
+
+        with col2:
+            st.subheader("📊 Interest vs Skill")
+            fig2 = px.scatter(df, x="interest", y="skill", color="career",
+                              title="Interest vs Skill Mapping")
+            st.plotly_chart(fig2, use_container_width=True)
+
+        st.subheader("📊 Career Popularity")
+        fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
+        st.plotly_chart(fig3, use_container_width=True)
+
+        st.success("💡 Insight: Choose career based on subject strength + interest")
+
+    except Exception as e:
+        st.error("⚠️ Dashboard error: Check dataset file")
+        st.write(e)
+
+    # ----------- DIVIDER -----------
+    st.markdown("---")
     # SCIENCE
     st.markdown("<div class='section'>🔬 Science Stream</div>", unsafe_allow_html=True)
 
@@ -335,33 +368,7 @@ Careers:
 👉 For AI/ML → B.Tech CSE  
 👉 Combine skills + degree  
 """)
-     # ----------- DASHBOARD -----------
-
-    st.markdown("---")
-    st.markdown("<div class='section'>📊 After 12th Dashboard</div>", unsafe_allow_html=True)
-
-    import plotly.express as px
-
-    try:
-        df = pd.read_csv("career_data_1000.csv")
-
-        st.subheader("📊 Subject vs Career")
-        fig1 = px.histogram(df, x="subject", color="career", title="Subjects and Career Paths")
-        st.plotly_chart(fig1, use_container_width=True)
-
-        st.subheader("📊 Interest vs Skill")
-        fig2 = px.scatter(df, x="interest", y="skill", color="career", title="Interest vs Skill Mapping")
-        st.plotly_chart(fig2, use_container_width=True)
-
-        st.subheader("📊 Career Popularity")
-        fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
-        st.plotly_chart(fig3, use_container_width=True)
-
-        st.success("💡 Insight: Choose career based on subject strength + interest")
-
-    except Exception as e:
-        st.error("⚠️ Dashboard error: Check dataset file")
-        st.write(e)
+  
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
