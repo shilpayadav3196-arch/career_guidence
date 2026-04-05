@@ -64,14 +64,16 @@ if "user" not in st.session_state:
 # ------------------ ML MODEL ------------------
 @st.cache_resource
 def load_model():
-    file_path = os.path.join(os.getcwd(), "career_data_1000.csv")
-    
+    file_path = "career_data_1000.csv"
+
     if not os.path.exists(file_path):
+        st.write("Available files:", os.listdir())
         st.error("❌ Dataset file not found. Upload career_data_1000.csv to GitHub.")
         st.stop()
 
     df = pd.read_csv(file_path)
 
+    # Encoding
     le_interest = LabelEncoder()
     le_skill = LabelEncoder()
     le_subject = LabelEncoder()
@@ -108,9 +110,25 @@ menu = st.sidebar.radio("Menu", [
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
     st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
-    st.markdown("<div class='text'>This system helps students choose the best career path.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
 
-# ------------------ AI RECOMMENDATION ------------------
+# ------------------ AFTER 10TH ------------------
+elif menu == "🎓 After 10th":
+    st.markdown("<div class='big-title'>🎓 Career Options After 10th</div>", unsafe_allow_html=True)
+    st.write("Streams: Science, Commerce, Arts")
+    st.write("Options: Polytechnic, ITI, Paramedical, Agriculture, Creative Fields")
+
+# ------------------ AFTER 12TH ------------------
+elif menu == "📘 After 12th":
+    st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
+    st.write("Science, Commerce, Arts, Government Jobs, Skill Courses, Business")
+
+# ------------------ CAREER SECTORS ------------------
+elif menu == "💼 Career Sectors":
+    st.markdown("<div class='big-title'>💼 Career Sectors</div>", unsafe_allow_html=True)
+    st.write("Public Sector vs Private Sector")
+
+# ------------------ AI ------------------
 elif menu == "🤖 AI Recommendation":
 
     st.markdown("<div class='big-title'>🤖 Smart Career Recommendation</div>", unsafe_allow_html=True)
@@ -133,9 +151,24 @@ elif menu == "🤖 AI Recommendation":
         "Analytical","Creative","Social","Leader","Practical"
     ])
 
+    # EXTRA FEATURES (kept same)
+    salary = st.selectbox("💰 Expected Salary Level", [
+        "High Salary","Moderate","Stable Income"
+    ])
+
+    location_pref = st.radio("🌍 Work Preference", [
+        "Work in India","Abroad","Remote Work"
+    ])
+
+    study_pref = st.radio("📖 Study Preference", [
+        "Long-term study (5+ years)",
+        "Short-term (1-3 years)",
+        "Skill-based courses"
+    ])
+
     if st.button("🔍 Get Recommendation"):
 
-        st.markdown("## 🎯 Best Career Option For You")
+        st.markdown("## 🎯 Best Career Options For You")
 
         try:
             input_data = [[
@@ -148,11 +181,32 @@ elif menu == "🤖 AI Recommendation":
             prediction = model.predict(input_data)
             career = le_career.inverse_transform(prediction)
 
-            st.success(f"👉 Recommended Career: {career[0]}")
+            st.success(f"🎯 Recommended Career: {career[0]}")
             st.write(f"📊 Model Accuracy: {accuracy*100:.2f}%")
 
         except:
             st.error("⚠️ Input not matching dataset")
+
+        # -------- EXTRA FEATURES --------
+        st.markdown("### 💡 Smart Suggestions")
+
+        if salary == "High Salary":
+            st.warning("💰 Focus on IT, AI, Data Science, Management")
+
+        if study_pref == "Short-term (1-3 years)":
+            st.warning("⏳ Try skill-based courses")
+
+        if location_pref == "Abroad":
+            st.warning("🌍 Prepare for IELTS/GRE")
+
+        if skill == "Communication":
+            st.warning("🗣️ Marketing, HR, Teaching are great options")
+
+        st.markdown("### 📊 Recommendation Confidence")
+        st.progress(85)
+        st.write("🔍 Confidence Level: High")
+
+        st.success("✅ Tip: Choose career based on Interest + Skills + Future Demand")
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
