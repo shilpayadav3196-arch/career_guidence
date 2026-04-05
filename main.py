@@ -72,6 +72,9 @@ def load_model():
         st.stop()
 
     df = pd.read_csv(file_path)
+     df = df.drop_duplicates()
+   df = df.dropna()
+
 
     le_interest = LabelEncoder()
     le_skill = LabelEncoder()
@@ -87,8 +90,10 @@ def load_model():
 
     X = df[["interest", "skill", "subject", "personality"]]
     y = df["career"]
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+   
 
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
