@@ -444,23 +444,65 @@ elif menu == "🤖 AI Recommendation":
         except:
             st.error("⚠️ Input not matching dataset")
 
-        # -------- EXTRA FEATURES --------
+         # -------- BUTTON --------
+    if st.button("🔍 Get Recommendation"):
+
+        st.markdown("## 🎯 Best Career Options For You")
+
+        # -------- SMART LOGIC --------
+        if interest == "Technology" and subject in ["Maths", "Computer Science"]:
+            st.success("💻 Best: B.Tech CSE, AI, Data Science, BCA")
+            st.info("👉 Careers: Software Engineer, AI Engineer, Data Scientist")
+
+        elif interest == "Medical" and subject == "Biology":
+            st.success("🏥 Best: MBBS, BDS, Pharmacy, Nursing")
+            st.info("👉 Careers: Doctor, Nurse, Pharmacist")
+
+        elif interest == "Business" or personality == "Leader":
+            st.success("💼 Best: BBA, B.Com, MBA")
+            st.info("👉 Careers: Manager, Entrepreneur, Business Analyst")
+
+        elif personality == "Creative":
+            st.success("🎨 Best: Design, Animation, UI/UX, Media")
+            st.info("👉 Careers: Graphic Designer, Animator, Content Creator")
+
+        elif work_style == "Government Job":
+            st.success("🏛️ Best: UPSC, SSC, Banking, Railways")
+            st.info("👉 Careers: IAS, IPS, Govt Officer")
+
+        elif interest == "Defense":
+            st.success("🪖 Best: NDA, CDS")
+            st.info("👉 Careers: Army, Navy, Airforce")
+
+        elif interest == "Teaching":
+            st.success("📚 Best: BA/B.Sc + B.Ed")
+            st.info("👉 Careers: Teacher, Lecturer")
+
+        else:
+            st.success("✨ Explore multiple career paths based on your skills")
+            st.info("👉 Combine skills + degree for best results")
+
+        # -------- EXTRA PERSONALIZATION --------
         st.markdown("### 💡 Smart Suggestions")
 
         if salary == "High Salary":
             st.warning("💰 Focus on IT, AI, Data Science, Management")
 
         if study_pref == "Short-term (1-3 years)":
-            st.warning("⏳ Try skill-based courses")
+            st.warning("⏳ Try skill-based courses like Web Dev, Digital Marketing")
 
         if location_pref == "Abroad":
-            st.warning("🌍 Prepare for IELTS/GRE")
+            st.warning("🌍 Prepare for IELTS/GRE + International opportunities")
 
         if skill == "Communication":
             st.warning("🗣️ Marketing, HR, Teaching are great options")
 
+        # -------- CONFIDENCE SCORE --------
         st.markdown("### 📊 Recommendation Confidence")
-        st.progress(85)
+
+        st.progress(80)
+      
+
         st.write("🔍 Confidence Level: High")
 
        
