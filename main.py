@@ -93,15 +93,13 @@ X_train, X_test, y_train, y_test = train_test_split(
     )
    
 
+   # ✅ CORRECT INDENT
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
 
     accuracy = model.score(X_test, y_test)
 
     return model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy
-
-
-model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy = load_model()
 
 # ------------------ SIDEBAR ------------------
 menu = st.sidebar.radio("Menu", [
