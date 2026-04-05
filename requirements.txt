@@ -5,3 +5,4 @@ scikit-learn
 joblib==1.4.2
 matplotlib
 fpdf
+plotly
