@@ -242,25 +242,7 @@ elif menu == "📘 After 12th":
 
     st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
 
-    # ------------------ DASHBOARD (TOP) ------------------
-    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
-
-    import plotly.express as px
-    df = pd.read_csv("career_data_1000.csv")
-
-    st.subheader("📊 Subject vs Career")
-    fig1 = px.histogram(df, x="subject", color="career", title="Subjects and Career Paths")
-    st.plotly_chart(fig1)
-
-    st.subheader("📊 Interest vs Skill")
-    fig2 = px.scatter(df, x="interest", y="skill", color="career", title="Interest vs Skill Mapping")
-    st.plotly_chart(fig2)
-
-    st.subheader("📊 Career Popularity")
-    fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
-    st.plotly_chart(fig3)
-
-    st.success("💡 Insight: Choose career based on subject strength + interest")
+  
 
     # ------------------ CONTENT ------------------
 
@@ -357,7 +339,25 @@ Careers:
 👉 For AI/ML → B.Tech CSE  
 👉 Combine skills + degree  
 """)
-  
+    # ------------------ DASHBOARD (TOP) ------------------
+    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
+
+    import plotly.express as px
+    df = pd.read_csv("career_data_1000.csv")
+
+    st.subheader("📊 Subject vs Career")
+    fig1 = px.histogram(df, x="subject", color="career", title="Subjects and Career Paths")
+    st.plotly_chart(fig1)
+
+    st.subheader("📊 Interest vs Skill")
+    fig2 = px.scatter(df, x="interest", y="skill", color="career", title="Interest vs Skill Mapping")
+    st.plotly_chart(fig2)
+
+    st.subheader("📊 Career Popularity")
+    fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
+    st.plotly_chart(fig3)
+
+    st.success("💡 Insight: Choose career based on subject strength + interest")
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
