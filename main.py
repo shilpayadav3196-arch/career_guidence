@@ -1,158 +1,573 @@
 import streamlit as st
-import json, os
+import json
+import os
 import pandas as pd
-import plotly.express as px
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
-# ---------------- CONFIG ----------------
-st.set_page_config(page_title="Career Guidance", layout="wide")
+# ------------------ PAGE CONFIG ------------------
+st.set_page_config(page_title="Career Guidance System", page_icon="🎯", layout="wide")
 
-# ---------------- SESSION ----------------
-if "page" not in st.session_state:
-    st.session_state.page = "home"
-
-# ---------------- MODEL ----------------
-@st.cache_resource
-def load_model():
-    df = pd.read_csv("career_data_1000.csv")
-
-    le1, le2, le3, le4, le5 = LabelEncoder(), LabelEncoder(), LabelEncoder(), LabelEncoder(), LabelEncoder()
-
-    df["interest"] = le1.fit_transform(df["interest"])
-    df["skill"] = le2.fit_transform(df["skill"])
-    df["subject"] = le3.fit_transform(df["subject"])
-    df["personality"] = le4.fit_transform(df["personality"])
-    df["career"] = le5.fit_transform(df["career"])
-
-    X = df[["interest","skill","subject","personality"]]
-    y = df["career"]
-
-    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
-
-    model = DecisionTreeClassifier()
-    model.fit(X_train,y_train)
-
-    acc = model.score(X_test,y_test)
-
-    return model, le1, le2, le3, le4, le5, acc
-
-model, le1, le2, le3, le4, le5, accuracy = load_model()
-
-# ---------------- STYLE ----------------
+# ------------------ STYLING ------------------
 st.markdown("""
 <style>
-.card {
-    background:white;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    transition:0.3s;
+.big-title {font-size:38px !important; font-weight:bold; color:#4CAF50;}
+.section {font-size:26px !important; font-weight:bold; margin-top:20px;}
+.sub {font-size:20px !important; font-weight:bold; color:#2196F3;}
+.text {font-size:18px !important;}
+/* Dashboard Cards */
+.card-btn button {
+    height: 150px;
+    width: 100%;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: white;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
 }
-.card:hover {transform:translateY(-8px);}
-.stButton>button {
-    height:180px;width:100%;
-    background:transparent;border:none;
+.card-btn button:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
+    background-color: #f0f8ff;
 }
 </style>
 """, unsafe_allow_html=True)
 
-page = st.session_state.page
+# ------------------ USER DB ------------------
+USER_FILE = "users.json"
 
-# ---------------- HOME ----------------
+def load_users():
+    if os.path.exists(USER_FILE):
+        return json.load(open(USER_FILE))
+    return {}
+
+def save_users(users):
+    json.dump(users, open(USER_FILE, "w"))
+
+users = load_users()
+
+# ------------------ LOGIN ------------------
+def login():
+    st.markdown("<div class='big-title'>🔐 Login / Signup</div>", unsafe_allow_html=True)
+
+    option = st.radio("Choose Option", ["Login", "Signup"])
+    user = st.text_input("Username")
+    pwd = st.text_input("Password", type="password")
+
+    if option == "Signup":
+        if st.button("Create Account", key="signup_btn"):
+            if user in users:
+                st.error("User already exists")
+            else:
+                users[user] = pwd
+                save_users(users)
+                st.success("Account created")
+
+    if option == "Login":
+        if st.button("Login", key="login_btn"):
+            if user in users and users[user] == pwd:
+                st.session_state["user"] = user
+                st.rerun()
+            else:
+                st.error("Invalid login")
+
+if "user" not in st.session_state:
+    login()
+    st.stop()
+    # ------------------ PAGE STATE ------------------
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+
+def go_to(page_name):
+    st.session_state.page = page_name
+
+# ------------------ ML MODEL ------------------
+@st.cache_resource
+def load_model():
+    file_path = "career_data_1000.csv"
+
+    if not os.path.exists(file_path):
+        st.write("Available files:", os.listdir())
+        st.error("❌ Dataset file not found. Upload career_data_1000.csv to GitHub.")
+        st.stop()
+
+    df = pd.read_csv(file_path)
+
+    le_interest = LabelEncoder()
+    le_skill = LabelEncoder()
+    le_subject = LabelEncoder()
+    le_personality = LabelEncoder()
+    le_career = LabelEncoder()
+
+    df["interest"] = le_interest.fit_transform(df["interest"])
+    df["skill"] = le_skill.fit_transform(df["skill"])
+    df["subject"] = le_subject.fit_transform(df["subject"])
+    df["personality"] = le_personality.fit_transform(df["personality"])
+    df["career"] = le_career.fit_transform(df["career"])
+
+    X = df[["interest", "skill", "subject", "personality"]]
+    y = df["career"]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    model = DecisionTreeClassifier()
+    model.fit(X_train, y_train)
+
+    accuracy = model.score(X_test, y_test)
+
+    return model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy
+
+
+model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy = load_model()
+
+# ------------------ HOME DASHBOARD ------------------
 if page == "home":
-    st.title("🎯 Career Guidance Dashboard")
 
-    col1,col2,col3 = st.columns(3)
+    st.markdown("<h1 style='text-align:center;'>🎯 Career Guidance Dashboard</h1>", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
 
     with col1:
-        if st.button(" "):
-            st.session_state.page="after10"; st.rerun()
-        st.markdown("<div class='card'><h3>🎓 After 10th</h3><p>All career options</p></div>",unsafe_allow_html=True)
+        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
+        if st.button("🎓 After 10th"):
+            go_to("after10")
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
-        if st.button("  "):
-            st.session_state.page="after12"; st.rerun()
-        st.markdown("<div class='card'><h3>📘 After 12th</h3></div>",unsafe_allow_html=True)
+        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
+        if st.button("📘 After 12th"):
+            go_to("after12")
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col3:
-        if st.button("   "):
-            st.session_state.page="ai"; st.rerun()
-        st.markdown("<div class='card'><h3>🤖 AI Recommendation</h3></div>",unsafe_allow_html=True)
+        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
+        if st.button("💼 Career Sectors"):
+            go_to("sectors")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-# ---------------- AFTER 10TH ----------------
-elif page=="after10":
-    st.title("🎓 Career Options After 10th")
+    col4, col5, col6 = st.columns(3)
 
-    st.markdown("### 📚 Intermediate (11th & 12th)")
-    st.write("""
-Science (MPC/BiPC), Commerce, Arts  
-✔ Leads to Engineering, Medical, Business
+    with col4:
+        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
+        if st.button("🤖 AI Recommendation"):
+            go_to("ai")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col5:
+        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
+        if st.button("📊 Analytics"):
+            go_to("analytics")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col6:
+        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
+        if st.button("🚪 Logout"):
+            go_to("logout")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
+elif menu == "🎓 After 10th":
+
+    st.markdown("<div class='big-title'>🎓 Career Options After 10th</div>", unsafe_allow_html=True)
+
+    st.markdown("<div class='section'>📚 1. Intermediate (11th & 12th)</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Most common and best option for higher studies  
+
+Streams:
+- 🔬 Science (MPC / BiPC)
+- 💼 Commerce
+- 🎨 Arts  
+
+✔ Leads to degree courses like Engineering, Medical, Business, etc.
 """)
 
-    st.markdown("### 🛠️ Polytechnic")
-    st.write("Mechanical, Civil, CSE → Early jobs + B.Tech entry")
+    st.markdown("<div class='section'>🛠️ 2. Polytechnic Diploma</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Engineering diploma after 10th  
 
-    st.markdown("### ⚙️ ITI")
-    st.write("Electrician, Fitter → Quick jobs")
+Courses:
+- Mechanical
+- Civil
+- Computer Science  
 
-    st.markdown("### 🎨 Creative Fields")
-    st.write("Design, Animation → Freelancing")
+ Benefits:
+- Early job opportunities  
+- Direct entry to B.Tech (2nd year)
+""")
 
-    st.markdown("### 💼 Business")
-    st.write("Start earning early")
+    st.markdown("<div class='section'>⚙️ 3. ITI (Industrial Training Institute)</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Skill-based technical training  
 
-    # -------- GRAPH --------
+Trades:
+- Electrician
+- Fitter
+- Welder  
+
+✔ Quick job opportunities  
+✔ Good for hands-on learners
+""")
+
+    st.markdown("<div class='section'>🏥 4. Paramedical Courses</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Healthcare support roles  
+
+Courses:
+- Lab Technician
+- Nursing Assistant  
+
+✔ Stable career in hospitals
+""")
+
+    st.markdown("<div class='section'>🌾 5. Agriculture</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Farming and agri-business  
+
+✔ Government jobs + business opportunities
+""")
+
+    st.markdown("<div class='section'>🎨 6. Creative Fields</div>", unsafe_allow_html=True)
+    st.markdown("""
+ For creative students  
+
+Options:
+- Designing
+- Animation
+- Media  
+
+✔ Freelancing + job opportunities
+""")
+
+    st.markdown("<div class='section'>🏨 7. Hotel Management</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Hospitality industry  
+
+✔ Jobs in hotels, tourism, airlines
+""")
+
+    st.markdown("<div class='section'>🏃 8. Sports</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Physical careers  
+
+✔ Athlete, Coach, Trainer
+""")
+
+    st.markdown("<div class='section'>🪖 9. Defense</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Army, Navy careers  
+
+✔ Discipline + respect
+""")
+
+    st.markdown("<div class='section'>💼 10. Business / Freelancing</div>", unsafe_allow_html=True)
+    st.markdown("""
+ Start early earning  
+
+✔ Online work, small business
+""")
+  # ----------- DASHBOARD -----------
+    st.markdown("---")
+    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
+
+    import plotly.express as px
+
+    try:
+        df = pd.read_csv("career_data_1000.csv")
+
+        st.subheader("📊 Career Distribution Based on Interest")
+        fig1 = px.histogram(df, x="interest", color="career", title="Interest vs Career")
+        st.plotly_chart(fig1, use_container_width=True)
+
+        st.subheader("📊 Skills Distribution")
+        fig2 = px.pie(df, names="skill", title="Skill Distribution")
+        st.plotly_chart(fig2, use_container_width=True)
+
+        st.subheader("📊 Personality Insights")
+        fig3 = px.bar(df["personality"].value_counts(), title="Personality Count")
+        st.plotly_chart(fig3, use_container_width=True)
+
+        st.success("💡 Insight: Choose stream based on your interest + skills combination")
+
+    except Exception as e:
+        st.error("⚠️ Dashboard error: Check dataset file")
+        st.write(e)
+# ------------------ AFTER 12TH (FULL ELABORATED 🔥) ------------------
+elif menu == "📘 After 12th":
+
+    st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
+
+  
+
+    # ------------------ CONTENT ------------------
+
+    # SCIENCE
+    st.markdown("<div class='section'>🔬 Science Stream</div>", unsafe_allow_html=True)
+
+    st.markdown("<div class='sub'>💻 MPC (Maths)</div>", unsafe_allow_html=True)
+    st.markdown("""
+Courses:
+- B.Tech / BE  
+- BCA  
+- B.Sc  
+- Architecture  
+
+Careers:
+- Software Engineer  
+- AI Engineer  
+- Data Scientist  
+""")
+
+    st.markdown("<div class='sub'>🏥 BiPC (Biology)</div>", unsafe_allow_html=True)
+    st.markdown("""
+Courses:
+- MBBS  
+- BDS  
+- Pharmacy  
+- Nursing  
+
+Careers:
+- Doctor  
+- Nurse  
+- Pharmacist  
+""")
+
+    # COMMERCE
+    st.markdown("<div class='section'>💼 Commerce</div>", unsafe_allow_html=True)
+    st.markdown("""
+Courses:
+- B.Com  
+- BBA  
+
+Professional:
+- CA, CS, CMA  
+
+Careers:
+- Accountant  
+- Banker  
+""")
+
+    # ARTS
+    st.markdown("<div class='section'>🎨 Arts</div>", unsafe_allow_html=True)
+    st.markdown("""
+Courses:
+- BA  
+- Law  
+- Journalism  
+
+Careers:
+- Lawyer  
+- Teacher  
+""")
+
+    # GOVT
+    st.markdown("<div class='section'>🏛️ Government Jobs</div>", unsafe_allow_html=True)
+    st.markdown("""
+- NDA  
+- SSC  
+- Railways  
+- Police  
+""")
+
+    # SKILLS
+    st.markdown("<div class='section'>💻 Skill Courses</div>", unsafe_allow_html=True)
+    st.markdown("""
+- AI/ML  
+- Web Dev  
+- Cyber Security  
+
+✔ Fast job opportunities
+""")
+
+    # BUSINESS
+    st.markdown("<div class='section'>🚀 Business & Freelancing</div>", unsafe_allow_html=True)
+    st.markdown("""
+- Startup  
+- YouTube  
+- Freelancing  
+""")
+
+    # SUGGESTION
+    st.markdown("<div class='section'>💡 Best Suggestion</div>", unsafe_allow_html=True)
+    st.success("""
+👉 Choose based on interest  
+👉 For AI/ML → B.Tech CSE  
+👉 Combine skills + degree  
+""")
+    # ------------------ DASHBOARD (TOP) ------------------
+    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
+
+    import plotly.express as px
     df = pd.read_csv("career_data_1000.csv")
 
-    st.subheader("📊 Interest vs Career")
-    fig = px.histogram(df, x="interest", color="career")
-    st.plotly_chart(fig, use_container_width=True)
+    st.subheader("📊 Subject vs Career")
+    fig1 = px.histogram(df, x="subject", color="career", title="Subjects and Career Paths")
+    st.plotly_chart(fig1)
 
-    if st.button("⬅ Back"):
-        st.session_state.page="home"; st.rerun()
-
-# ---------------- AFTER 12TH ----------------
-elif page=="after12":
-    st.title("📘 Career Options After 12th")
-
-    st.markdown("### 🔬 Science")
-    st.write("B.Tech, MBBS → Engineer, Doctor")
-
-    st.markdown("### 💼 Commerce")
-    st.write("B.Com, CA → Accountant")
-
-    st.markdown("### 🎨 Arts")
-    st.write("BA, Law → Lawyer")
-
-    st.markdown("### 💻 Skills")
-    st.write("AI, Web Dev → Fast jobs")
-
-    df = pd.read_csv("career_data_1000.csv")
+    st.subheader("📊 Interest vs Skill")
+    fig2 = px.scatter(df, x="interest", y="skill", color="career", title="Interest vs Skill Mapping")
+    st.plotly_chart(fig2)
 
     st.subheader("📊 Career Popularity")
-    st.plotly_chart(px.bar(df["career"].value_counts()))
+    fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
+    st.plotly_chart(fig3)
 
-    if st.button("⬅ Back"):
-        st.session_state.page="home"; st.rerun()
+    st.success("💡 Insight: Choose career based on subject strength + interest")
 
-# ---------------- AI ----------------
-elif page=="ai":
-    st.title("🤖 Smart Recommendation")
+# ------------------ CAREER SECTORS ------------------
+elif menu == "💼 Career Sectors":
 
-    df = pd.read_csv("career_data_1000.csv")
+    st.markdown("<div class='big-title'>💼 Career Sectors</div>", unsafe_allow_html=True)
 
-    i = st.selectbox("Interest", df["interest"].unique())
-    s = st.selectbox("Skill", df["skill"].unique())
-    sub = st.selectbox("Subject", df["subject"].unique())
-    p = st.selectbox("Personality", df["personality"].unique())
+    # -------- PUBLIC SECTOR --------
+    st.markdown("<div class='section'>🏛️ Public Sector (Government)</div>", unsafe_allow_html=True)
 
-    if st.button("Predict"):
-        data=[[le1.transform([i])[0],le2.transform([s])[0],le3.transform([sub])[0],le4.transform([p])[0]]]
-        pred=model.predict(data)
-        st.success(le5.inverse_transform(pred)[0])
-        st.write(f"Accuracy: {accuracy*100:.2f}%")
+    st.markdown("""
+Jobs provided by the government with high job security and benefits.
 
-    if st.button("⬅ Back"):
-        st.session_state.page="home"; st.rerun()
+**Examples:**
+- UPSC (IAS, IPS)  
+- Banking (SBI, IBPS)  
+- Railways  
+- Defense  
+- SSC  
+
+**Advantages:**
+- Job security  
+- Fixed working hours  
+- Pension & benefits  
+
+**Challenges:**
+- Tough competition  
+- Slower career growth  
+
+**What to Study:**
+- GK  
+- Reasoning  
+- English  
+- Current Affairs  
+""")
+
+    # -------- PRIVATE SECTOR --------
+    st.markdown("<div class='section'>🏢 Private Sector</div>", unsafe_allow_html=True)
+
+    st.markdown("""
+Jobs in companies and industries with faster growth and higher salary potential.
+
+**Examples:**
+- IT (Software Developer)  
+- Marketing  
+- Finance  
+- HR  
+- Design  
+
+**Advantages:**
+- High salary   
+- Fast career growth   
+- More opportunities  
+
+**Challenges:**
+- Job pressure  
+- Less job security  
+
+**What to Study:**
+- Technical skills  
+- Communication  
+- Domain knowledge  
+""")
+
+    # -------- TIP --------
+    st.markdown("<div class='section'>✅ Tip</div>", unsafe_allow_html=True)
+
+    st.success("""
+👉 Choose Public Sector for stability  
+👉 Choose Private Sector for growth and salary  
+""")
+
+
+# ------------------ AI ------------------
+elif menu == "🤖 AI Recommendation":
+
+    st.markdown("<div class='big-title'>🤖 Smart Career Recommendation</div>", unsafe_allow_html=True)
+
+    interest = st.selectbox("🎯 Interest", [
+        "Technology","Medical","Business","Creative","Government Jobs",
+        "Teaching","Defense","Sports","Agriculture","Hospitality"
+    ])
+
+    skill = st.selectbox("⚡ Skill", [
+        "Problem Solving","Communication","Creativity","Leadership",
+        "Physical Fitness","Analytical Thinking","Practical"
+    ])
+
+    subject = st.selectbox("📚 Subject", [
+        "Maths","Biology","Computer Science","Commerce","Arts","None"
+    ])
+
+    personality = st.selectbox("🧠 Personality", [
+        "Analytical","Creative","Social","Leader","Practical"
+    ])
+
+    salary = st.selectbox("💰 Expected Salary Level", [
+        "High Salary","Moderate","Stable Income"
+    ])
+
+    location_pref = st.radio("🌍 Work Preference", [
+        "Work in India","Abroad","Remote Work"
+    ])
+
+    study_pref = st.radio("📖 Study Preference", [
+        "Long-term study (5+ years)",
+        "Short-term (1-3 years)",
+        "Skill-based courses"
+    ])
+
+    # ✅ FIXED BUTTON
+    if st.button("🔍 Get Recommendation", key="predict_btn"):
+
+        st.markdown("## 🎯 Best Career Options For You")
+
+        try:
+            input_data = [[
+                le_interest.transform([interest])[0],
+                le_skill.transform([skill])[0],
+                le_subject.transform([subject])[0],
+                le_personality.transform([personality])[0]
+            ]]
+
+            prediction = model.predict(input_data)
+            career = le_career.inverse_transform(prediction)
+
+            st.success(f"🎯 Recommended Career: {career[0]}")
+            st.write(f"📊 Model Accuracy: {accuracy*100:.2f}%")
+
+        except:
+            st.error("⚠️ Input not matching dataset")
+
+        # -------- EXTRA FEATURES --------
+        st.markdown("### 💡 Smart Suggestions")
+
+        if salary == "High Salary":
+            st.warning("💰 Focus on IT, AI, Data Science, Management")
+
+        if study_pref == "Short-term (1-3 years)":
+            st.warning("⏳ Try skill-based courses")
+
+        if location_pref == "Abroad":
+            st.warning("🌍 Prepare for IELTS/GRE")
+
+        if skill == "Communication":
+            st.warning("🗣️ Marketing, HR, Teaching are great options")
+
+        st.markdown("### 📊 Recommendation Confidence")
+        st.progress(85)
+        st.write("🔍 Confidence Level: High")
+
+        st.success("✅ Tip: Choose career based on Interest + Skills + Future Demand")
+
+# ------------------ LOGOUT ------------------
+elif menu == "🚪 Logout":
+    del st.session_state["user"]
+    st.rerun()     
