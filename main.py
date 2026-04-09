@@ -105,21 +105,18 @@ menu = st.sidebar.radio("Menu", [
     "🏠 Home", "🎓 After 10th", "📘 After 12th",
     "💼 Career Sectors", "🤖 AI Recommendation", "🚪 Logout"
 ])
+
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
     st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
-    st.markdown("<div class='text'>This system helps students choose the best career path.</div>", unsafe_allow_html=True)
-
-
-# ------------------ AFTER 10TH  ------------------
+    st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
+# ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
 elif menu == "🎓 After 10th":
 
     st.markdown("<div class='big-title'>🎓 Career Options After 10th</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='section'>📚 1. Intermediate (11th & 12th)</div>", unsafe_allow_html=True)
     st.markdown("""
- 
-
  Most common and best option for higher studies  
 
 Streams:
@@ -214,13 +211,39 @@ Options:
 
 ✔ Online work, small business
 """)
+  # ----------- DASHBOARD -----------
+    st.markdown("---")
+    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
 
-# ------------------ AFTER 12TH ------------------
+    import plotly.express as px
+
+    try:
+        df = pd.read_csv("career_data_1000.csv")
+
+        st.subheader("📊 Career Distribution Based on Interest")
+        fig1 = px.histogram(df, x="interest", color="career", title="Interest vs Career")
+        st.plotly_chart(fig1, use_container_width=True)
+
+        st.subheader("📊 Skills Distribution")
+        fig2 = px.pie(df, names="skill", title="Skill Distribution")
+        st.plotly_chart(fig2, use_container_width=True)
+
+        st.subheader("📊 Personality Insights")
+        fig3 = px.bar(df["personality"].value_counts(), title="Personality Count")
+        st.plotly_chart(fig3, use_container_width=True)
+
+        st.success("💡 Insight: Choose stream based on your interest + skills combination")
+
+    except Exception as e:
+        st.error("⚠️ Dashboard error: Check dataset file")
+        st.write(e)
+# ------------------ AFTER 12TH (FULL ELABORATED 🔥) ------------------
 elif menu == "📘 After 12th":
 
     st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
 
- 
+  
+
     # ------------------ CONTENT ------------------
 
     # SCIENCE
@@ -316,7 +339,25 @@ Careers:
 👉 For AI/ML → B.Tech CSE  
 👉 Combine skills + degree  
 """)
- 
+    # ------------------ DASHBOARD (TOP) ------------------
+    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
+
+    import plotly.express as px
+    df = pd.read_csv("career_data_1000.csv")
+
+    st.subheader("📊 Subject vs Career")
+    fig1 = px.histogram(df, x="subject", color="career", title="Subjects and Career Paths")
+    st.plotly_chart(fig1)
+
+    st.subheader("📊 Interest vs Skill")
+    fig2 = px.scatter(df, x="interest", y="skill", color="career", title="Interest vs Skill Mapping")
+    st.plotly_chart(fig2)
+
+    st.subheader("📊 Career Popularity")
+    fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
+    st.plotly_chart(fig3)
+
+    st.success("💡 Insight: Choose career based on subject strength + interest")
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
@@ -393,36 +434,7 @@ Jobs in companies and industries with faster growth and higher salary potential.
 elif menu == "🤖 AI Recommendation":
 
     st.markdown("<div class='big-title'>🤖 Smart Career Recommendation</div>", unsafe_allow_html=True)
-# ------------------ AI ------------------
-elif menu == "ai":
 
-    st.title("🤖 AI Career Recommendation")
-
-    df = pd.read_csv("career_data_1000.csv")
-
-    interest = st.selectbox("Interest", df["interest"].unique())
-    skill = st.selectbox("Skill", df["skill"].unique())
-    subject = st.selectbox("Subject", df["subject"].unique())
-    personality = st.selectbox("Personality", df["personality"].unique())
-
-    if st.button("Predict"):
-
-        input_data = [[
-            le_interest.transform([interest])[0],
-            le_skill.transform([skill])[0],
-            le_subject.transform([subject])[0],
-            le_personality.transform([personality])[0]
-        ]]
-
-        pred = model.predict(input_data)
-        career = le_career.inverse_transform(pred)
-
-        st.success(f"🎯 Recommended Career: {career[0]}")
-        st.write(f"📊 Accuracy: {accuracy*100:.2f}%")
-
-    if st.button("⬅ Back"):
-        st.session_state.page = "home"
-        st.rerun()
     interest = st.selectbox("🎯 Interest", [
         "Technology","Medical","Business","Creative","Government Jobs",
         "Teaching","Defense","Sports","Agriculture","Hospitality"
@@ -476,56 +488,7 @@ elif menu == "ai":
 
         except:
             st.error("⚠️ Input not matching dataset")
-# ------------------ ANALYSIS ------------------
-elif menu == "analysis":
 
-    st.title("🧠 Skill Analysis")
-
-    df = pd.read_csv("career_data_1000.csv")
-
-    st.subheader("📊 Interest vs Skill")
-    st.scatter_chart(df[["interest", "skill"]])
-
-    st.subheader("📊 Personality Distribution")
-    st.bar_chart(df["personality"].value_counts())
-
-    if st.button("⬅ Back"):
-        st.session_state.page = "home"
-        st.rerun()
-
-# ------------------ SECTORS ------------------
-elif menu == "sectors":
-
-    st.title("💼 Career Sectors")
-
-    st.write("""
-    🏛️ Government: UPSC, Banking, Railways  
-    🏢 Private: IT, Marketing, Finance  
-    """)
-
-    if st.button("⬅ Back"):
-        st.session_state.page = "home"
-        st.rerun()
-
-# ------------------ INSIGHTS ------------------
-elif menu == "insights":
-
-    st.title("📊 Career Insights")
-
-    df = pd.read_csv("career_data_1000.csv")
-
-    st.subheader("📊 Career Distribution")
-    st.bar_chart(df["career"].value_counts())
-
-    st.subheader("📊 Subjects")
-    st.bar_chart(df["subject"].value_counts())
-
-    st.subheader("📊 Skills")
-    st.bar_chart(df["skill"].value_counts())
-
-    if st.button("⬅ Back"):
-        st.session_state.page = "home"
-        st.rerun()
         # -------- EXTRA FEATURES --------
         st.markdown("### 💡 Smart Suggestions")
 
@@ -546,10 +509,8 @@ elif menu == "insights":
         st.write("🔍 Confidence Level: High")
 
         st.success("✅ Tip: Choose career based on Interest + Skills + Future Demand")
-        
-        
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
     del st.session_state["user"]
-    st.rerun()                   
+    st.rerun()                                                        
