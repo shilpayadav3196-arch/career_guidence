@@ -18,6 +18,12 @@ st.markdown("""
 .text {font-size:18px !important;}
 </style>
 """, unsafe_allow_html=True)
+# ------------------ SESSION STATE ------------------
+if "user" not in st.session_state:
+    st.session_state.user = None
+
+if "page" not in st.session_state:
+    st.session_state.page = "home"
 
 # ------------------ USER DB ------------------
 USER_FILE = "users.json"
@@ -106,11 +112,61 @@ menu = st.sidebar.radio("Menu", [
     "💼 Career Sectors", "🤖 AI Recommendation", "🚪 Logout"
 ])
 
-# ------------------ HOME ------------------
-if menu == "🏠 Home":
-    st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
-    st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
-   
+# ------------------ HOME DASHBOARD ------------------
+if menu == "home":
+
+    st.markdown("## 🎯 AI Career Guidance Dashboard")
+
+    st.markdown("""
+    <style>
+    .stButton>button {
+        height: 120px;
+        width: 100%;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("🎓 After 10th\nExplore options"):
+            st.session_state.page = "after10"
+            st.rerun()
+
+    with col2:
+        if st.button("📘 After 12th\nHigher studies"):
+            st.session_state.page = "after12"
+            st.rerun()
+
+    with col3:
+        if st.button("🤖 AI Recommendation\nGet career"):
+            st.session_state.page = "ai"
+            st.rerun()
+
+    col4, col5, col6 = st.columns(3)
+
+    with col4:
+        if st.button("🧠 Skill Analysis\nInsights"):
+            st.session_state.page = "analysis"
+            st.rerun()
+
+    with col5:
+        if st.button("💼 Career Sectors\nCompare"):
+            st.session_state.page = "sectors"
+            st.rerun()
+
+    with col6:
+        if st.button("📊 Data Insights\nTrends"):
+            st.session_state.page = "insights"
+            st.rerun()
+
+    st.markdown("---")
+    st.success(f"📊 Model Accuracy: {accuracy*100:.2f}%")
 
     # ---------- CARD STYLE ----------
     st.markdown("""
@@ -220,20 +276,7 @@ if menu == "🏠 Home":
         </div>
         """, unsafe_allow_html=True)
 
-    # ---------- MODEL PERFORMANCE ----------
-    st.markdown("---")
-    st.markdown("### 📊 Model Performance")
-
-    colA, colB = st.columns(2)
-
-    with colA:
-        st.success(f"✅ Accuracy: {accuracy*100:.2f}%")
-
-    with colB:
-        st.info("🤖 Model: Decision Tree Classifier")
-
-    with st.expander("📄 Detailed Classification Report"):
-        st.text(report)
+ 
 # ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
 elif menu == "🎓 After 10th":
 
@@ -241,6 +284,23 @@ elif menu == "🎓 After 10th":
 
     st.markdown("<div class='section'>📚 1. Intermediate (11th & 12th)</div>", unsafe_allow_html=True)
     st.markdown("""
+    # ------------------ AFTER 10TH ------------------
+elif menu == "after10":
+
+    st.title("🎓 Career Options After 10th")
+
+    df = pd.read_csv("career_data_1000.csv")
+
+    st.subheader("📊 Student Interests")
+    st.bar_chart(df["interest"].value_counts())
+
+    st.subheader("📊 Career Trends")
+    st.bar_chart(df["career"].value_counts())
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+        st.rerun()
+
  Most common and best option for higher studies  
 
 Streams:
@@ -366,7 +426,23 @@ elif menu == "📘 After 12th":
 
     st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
 
-  
+  # ------------------ AFTER 12TH ------------------
+elif menu == "after12":
+
+    st.title("📘 Career Options After 12th")
+
+    df = pd.read_csv("career_data_1000.csv")
+
+    st.subheader("📊 Subject vs Career")
+    st.bar_chart(df.groupby("subject")["career"].count())
+
+    st.subheader("📊 Skill Demand")
+    st.bar_chart(df["skill"].value_counts())
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+        st.rerun()
+
 
     # ------------------ CONTENT ------------------
 
@@ -558,7 +634,36 @@ Jobs in companies and industries with faster growth and higher salary potential.
 elif menu == "🤖 AI Recommendation":
 
     st.markdown("<div class='big-title'>🤖 Smart Career Recommendation</div>", unsafe_allow_html=True)
+# ------------------ AI ------------------
+elif menu == "ai":
 
+    st.title("🤖 AI Career Recommendation")
+
+    df = pd.read_csv("career_data_1000.csv")
+
+    interest = st.selectbox("Interest", df["interest"].unique())
+    skill = st.selectbox("Skill", df["skill"].unique())
+    subject = st.selectbox("Subject", df["subject"].unique())
+    personality = st.selectbox("Personality", df["personality"].unique())
+
+    if st.button("Predict"):
+
+        input_data = [[
+            le_interest.transform([interest])[0],
+            le_skill.transform([skill])[0],
+            le_subject.transform([subject])[0],
+            le_personality.transform([personality])[0]
+        ]]
+
+        pred = model.predict(input_data)
+        career = le_career.inverse_transform(pred)
+
+        st.success(f"🎯 Recommended Career: {career[0]}")
+        st.write(f"📊 Accuracy: {accuracy*100:.2f}%")
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+        st.rerun()
     interest = st.selectbox("🎯 Interest", [
         "Technology","Medical","Business","Creative","Government Jobs",
         "Teaching","Defense","Sports","Agriculture","Hospitality"
@@ -612,7 +717,56 @@ elif menu == "🤖 AI Recommendation":
 
         except:
             st.error("⚠️ Input not matching dataset")
+# ------------------ ANALYSIS ------------------
+elif menu == "analysis":
 
+    st.title("🧠 Skill Analysis")
+
+    df = pd.read_csv("career_data_1000.csv")
+
+    st.subheader("📊 Interest vs Skill")
+    st.scatter_chart(df[["interest", "skill"]])
+
+    st.subheader("📊 Personality Distribution")
+    st.bar_chart(df["personality"].value_counts())
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+        st.rerun()
+
+# ------------------ SECTORS ------------------
+elif menu == "sectors":
+
+    st.title("💼 Career Sectors")
+
+    st.write("""
+    🏛️ Government: UPSC, Banking, Railways  
+    🏢 Private: IT, Marketing, Finance  
+    """)
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+        st.rerun()
+
+# ------------------ INSIGHTS ------------------
+elif menu == "insights":
+
+    st.title("📊 Career Insights")
+
+    df = pd.read_csv("career_data_1000.csv")
+
+    st.subheader("📊 Career Distribution")
+    st.bar_chart(df["career"].value_counts())
+
+    st.subheader("📊 Subjects")
+    st.bar_chart(df["subject"].value_counts())
+
+    st.subheader("📊 Skills")
+    st.bar_chart(df["skill"].value_counts())
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+        st.rerun()
         # -------- EXTRA FEATURES --------
         st.markdown("### 💡 Smart Suggestions")
 
