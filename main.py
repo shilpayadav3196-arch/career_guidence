@@ -110,7 +110,9 @@ menu = st.sidebar.radio("Menu", [
 if menu == "🏠 Home":
     st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
     st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
-     # ---------- CUSTOM CARD STYLE ----------
+   
+
+    # ---------- CARD STYLE ----------
     st.markdown("""
     <style>
     .card {
@@ -126,7 +128,7 @@ if menu == "🏠 Home":
         box-shadow: 0 6px 18px rgba(0,0,0,0.15);
     }
     .tag {
-        background-color: #e53935;
+        background-color: #4CAF50;
         color: white;
         padding: 5px 10px;
         border-radius: 8px;
@@ -152,27 +154,33 @@ if menu == "🏠 Home":
     with col1:
         st.markdown("""
         <div class="card">
-            <div class="tag">ACADEMIC</div>
-            <div class="title">Student Records</div>
-            <div class="desc">View student academic performance and progress.</div>
+            <div class="tag">CAREER OPTIONS</div>
+            <div class="title">After 10th Guidance</div>
+            <div class="desc">
+            Explore streams like Science, Commerce, Arts, Polytechnic, ITI, and skill-based careers.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
         <div class="card">
-            <div class="tag">CLASS RESULT</div>
-            <div class="title">Batch Analysis</div>
-            <div class="desc">Analyze student batch performance reports.</div>
+            <div class="tag">HIGHER STUDIES</div>
+            <div class="title">After 12th Planning</div>
+            <div class="desc">
+            Get detailed guidance on Engineering, Medical, Business, Government, and skill careers.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown("""
         <div class="card">
-            <div class="tag">SEMESTER</div>
-            <div class="title">Periodic Filter</div>
-            <div class="desc">Filter records based on semesters and exams.</div>
+            <div class="tag">AI SYSTEM</div>
+            <div class="title">Smart Recommendation</div>
+            <div class="desc">
+            Get personalized career suggestions using Machine Learning based on your interests.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -182,35 +190,50 @@ if menu == "🏠 Home":
     with col4:
         st.markdown("""
         <div class="card">
-            <div class="tag">BACKLOG</div>
-            <div class="title">Pending Subjects</div>
-            <div class="desc">Track pending subjects and requirements.</div>
+            <div class="tag">SKILL ANALYSIS</div>
+            <div class="title">Interest + Skill Mapping</div>
+            <div class="desc">
+            Analyze how your skills and interests match different career paths.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col5:
         st.markdown("""
         <div class="card">
-            <div class="tag">CREDITS</div>
-            <div class="title">Eligibility Check</div>
-            <div class="desc">Verify total credits for graduation.</div>
+            <div class="tag">CAREER SECTORS</div>
+            <div class="title">Public vs Private</div>
+            <div class="desc">
+            Compare government jobs and private sector opportunities with benefits and challenges.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col6:
         st.markdown("""
         <div class="card">
-            <div class="tag">ANALYTICS</div>
-            <div class="title">Trend Mapping</div>
-            <div class="desc">Visualize career trends and performance.</div>
+            <div class="tag">DATA INSIGHTS</div>
+            <div class="title">Career Trends</div>
+            <div class="desc">
+            Visualize career demand trends using dataset analysis and charts.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     # ---------- MODEL PERFORMANCE ----------
     st.markdown("---")
     st.markdown("### 📊 Model Performance")
-    st.success(f"✅ Accuracy: {accuracy*100:.2f}%")
 
+    colA, colB = st.columns(2)
+
+    with colA:
+        st.success(f"✅ Accuracy: {accuracy*100:.2f}%")
+
+    with colB:
+        st.info("🤖 Model: Decision Tree Classifier")
+
+    with st.expander("📄 Detailed Classification Report"):
+        st.text(report)
 # ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
 elif menu == "🎓 After 10th":
 
