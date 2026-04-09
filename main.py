@@ -110,12 +110,7 @@ menu = st.sidebar.radio("Menu", [
 if menu == "🏠 Home":
     st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
     st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
-        # ✅ MODEL PERFORMANCE DISPLAY
-    st.markdown("### 📊 Model Performance")
-    st.success(f"✅ Accuracy: {accuracy*100:.2f}%")
-
-    with st.expander("📄 Detailed Classification Report"):
-        st.text(report)
+     
 
 # ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
 elif menu == "🎓 After 10th":
@@ -517,14 +512,7 @@ elif menu == "🤖 AI Recommendation":
 
         st.success("✅ Tip: Choose career based on Interest + Skills + Future Demand")
         
-            # ✅ SHOW ACCURACY HERE ALSO
-            st.write(f"📊 Model Accuracy: {accuracy*100:.2f}%")
-
-            st.progress(int(accuracy * 100))
-
-        except:
-            st.error("⚠️ Input not matching dataset")
-
+        
 
 # ------------------ LOGOUT ------------------
 elif menu == "🚪 Logout":
