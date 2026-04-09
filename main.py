@@ -16,22 +16,6 @@ st.markdown("""
 .section {font-size:26px !important; font-weight:bold; margin-top:20px;}
 .sub {font-size:20px !important; font-weight:bold; color:#2196F3;}
 .text {font-size:18px !important;}
-/* Dashboard Cards */
-.card-btn button {
-    height: 150px;
-    width: 100%;
-    border-radius: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: white;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-    transition: 0.3s;
-}
-.card-btn button:hover {
-    transform: translateY(-8px);
-    box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
-    background-color: #f0f8ff;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -76,12 +60,6 @@ def login():
 if "user" not in st.session_state:
     login()
     st.stop()
-    # ------------------ PAGE STATE ------------------
-if "page" not in st.session_state:
-    st.session_state.page = "home"
-
-def go_to(page_name):
-    st.session_state.page = page_name
 
 # ------------------ ML MODEL ------------------
 @st.cache_resource
@@ -122,51 +100,16 @@ def load_model():
 
 model, le_interest, le_skill, le_subject, le_personality, le_career, accuracy = load_model()
 
-# ------------------ HOME DASHBOARD ------------------
-if page == "home":
+# ------------------ SIDEBAR ------------------
+menu = st.sidebar.radio("Menu", [
+    "🏠 Home", "🎓 After 10th", "📘 After 12th",
+    "💼 Career Sectors", "🤖 AI Recommendation", "🚪 Logout"
+])
 
-    st.markdown("<h1 style='text-align:center;'>🎯 Career Guidance Dashboard</h1>", unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
-        if st.button("🎓 After 10th"):
-            go_to("after10")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col2:
-        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
-        if st.button("📘 After 12th"):
-            go_to("after12")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col3:
-        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
-        if st.button("💼 Career Sectors"):
-            go_to("sectors")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    col4, col5, col6 = st.columns(3)
-
-    with col4:
-        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
-        if st.button("🤖 AI Recommendation"):
-            go_to("ai")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col5:
-        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
-        if st.button("📊 Analytics"):
-            go_to("analytics")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col6:
-        st.markdown('<div class="card-btn">', unsafe_allow_html=True)
-        if st.button("🚪 Logout"):
-            go_to("logout")
-        st.markdown('</div>', unsafe_allow_html=True)
-
+# ------------------ HOME ------------------
+if menu == "🏠 Home":
+    st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
+    st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
 # ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
 elif menu == "🎓 After 10th":
 
