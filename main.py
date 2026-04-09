@@ -110,7 +110,106 @@ menu = st.sidebar.radio("Menu", [
 if menu == "🏠 Home":
     st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
     st.markdown("<div class='text'>This system helps students choose the best career path after 10th and 12th.</div>", unsafe_allow_html=True)
-     
+     # ---------- CUSTOM CARD STYLE ----------
+    st.markdown("""
+    <style>
+    .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 10px;
+        transition: 0.3s;
+    }
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+    .tag {
+        background-color: #e53935;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .desc {
+        font-size: 15px;
+        color: #555;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ---------- ROW 1 ----------
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+        <div class="card">
+            <div class="tag">ACADEMIC</div>
+            <div class="title">Student Records</div>
+            <div class="desc">View student academic performance and progress.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="card">
+            <div class="tag">CLASS RESULT</div>
+            <div class="title">Batch Analysis</div>
+            <div class="desc">Analyze student batch performance reports.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("""
+        <div class="card">
+            <div class="tag">SEMESTER</div>
+            <div class="title">Periodic Filter</div>
+            <div class="desc">Filter records based on semesters and exams.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ---------- ROW 2 ----------
+    col4, col5, col6 = st.columns(3)
+
+    with col4:
+        st.markdown("""
+        <div class="card">
+            <div class="tag">BACKLOG</div>
+            <div class="title">Pending Subjects</div>
+            <div class="desc">Track pending subjects and requirements.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col5:
+        st.markdown("""
+        <div class="card">
+            <div class="tag">CREDITS</div>
+            <div class="title">Eligibility Check</div>
+            <div class="desc">Verify total credits for graduation.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col6:
+        st.markdown("""
+        <div class="card">
+            <div class="tag">ANALYTICS</div>
+            <div class="title">Trend Mapping</div>
+            <div class="desc">Visualize career trends and performance.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ---------- MODEL PERFORMANCE ----------
+    st.markdown("---")
+    st.markdown("### 📊 Model Performance")
+    st.success(f"✅ Accuracy: {accuracy*100:.2f}%")
 
 # ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
 elif menu == "🎓 After 10th":
