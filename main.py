@@ -18,12 +18,6 @@ st.markdown("""
 .text {font-size:18px !important;}
 </style>
 """, unsafe_allow_html=True)
-# ------------------ SESSION STATE ------------------
-if "user" not in st.session_state:
-    st.session_state.user = None
-
-if "page" not in st.session_state:
-    st.session_state.page = "home"
 
 # ------------------ USER DB ------------------
 USER_FILE = "users.json"
@@ -111,195 +105,20 @@ menu = st.sidebar.radio("Menu", [
     "🏠 Home", "🎓 After 10th", "📘 After 12th",
     "💼 Career Sectors", "🤖 AI Recommendation", "🚪 Logout"
 ])
+# ------------------ HOME ------------------
+if menu == "🏠 Home":
+    st.markdown("<div class='big-title'>🎯 Career Guidance System</div>", unsafe_allow_html=True)
+    st.markdown("<div class='text'>This system helps students choose the best career path.</div>", unsafe_allow_html=True)
 
-# ------------------ HOME DASHBOARD ------------------
-if menu == "home":
 
-    st.markdown("## 🎯 AI Career Guidance Dashboard")
-
-    st.markdown("""
-    <style>
-    .stButton>button {
-        height: 120px;
-        width: 100%;
-        border-radius: 15px;
-        font-size: 16px;
-        font-weight: bold;
-        background-color: #ffffff;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        if st.button("🎓 After 10th\nExplore options"):
-            st.session_state.page = "after10"
-            st.rerun()
-
-    with col2:
-        if st.button("📘 After 12th\nHigher studies"):
-            st.session_state.page = "after12"
-            st.rerun()
-
-    with col3:
-        if st.button("🤖 AI Recommendation\nGet career"):
-            st.session_state.page = "ai"
-            st.rerun()
-
-    col4, col5, col6 = st.columns(3)
-
-    with col4:
-        if st.button("🧠 Skill Analysis\nInsights"):
-            st.session_state.page = "analysis"
-            st.rerun()
-
-    with col5:
-        if st.button("💼 Career Sectors\nCompare"):
-            st.session_state.page = "sectors"
-            st.rerun()
-
-    with col6:
-        if st.button("📊 Data Insights\nTrends"):
-            st.session_state.page = "insights"
-            st.rerun()
-
-    st.markdown("---")
-    st.success(f"📊 Model Accuracy: {accuracy*100:.2f}%")
-
-    # ---------- CARD STYLE ----------
-    st.markdown("""
-    <style>
-    .card {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        margin: 10px;
-        transition: 0.3s;
-    }
-    .card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-    }
-    .tag {
-        background-color: #4CAF50;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-size: 12px;
-        display: inline-block;
-        margin-bottom: 10px;
-    }
-    .title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .desc {
-        font-size: 15px;
-        color: #555;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # ---------- ROW 1 ----------
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown("""
-        <div class="card">
-            <div class="tag">CAREER OPTIONS</div>
-            <div class="title">After 10th Guidance</div>
-            <div class="desc">
-            Explore streams like Science, Commerce, Arts, Polytechnic, ITI, and skill-based careers.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("""
-        <div class="card">
-            <div class="tag">HIGHER STUDIES</div>
-            <div class="title">After 12th Planning</div>
-            <div class="desc">
-            Get detailed guidance on Engineering, Medical, Business, Government, and skill careers.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col3:
-        st.markdown("""
-        <div class="card">
-            <div class="tag">AI SYSTEM</div>
-            <div class="title">Smart Recommendation</div>
-            <div class="desc">
-            Get personalized career suggestions using Machine Learning based on your interests.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ---------- ROW 2 ----------
-    col4, col5, col6 = st.columns(3)
-
-    with col4:
-        st.markdown("""
-        <div class="card">
-            <div class="tag">SKILL ANALYSIS</div>
-            <div class="title">Interest + Skill Mapping</div>
-            <div class="desc">
-            Analyze how your skills and interests match different career paths.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col5:
-        st.markdown("""
-        <div class="card">
-            <div class="tag">CAREER SECTORS</div>
-            <div class="title">Public vs Private</div>
-            <div class="desc">
-            Compare government jobs and private sector opportunities with benefits and challenges.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col6:
-        st.markdown("""
-        <div class="card">
-            <div class="tag">DATA INSIGHTS</div>
-            <div class="title">Career Trends</div>
-            <div class="desc">
-            Visualize career demand trends using dataset analysis and charts.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
- 
-# ------------------ AFTER 10TH (FULL ELABORATED 🔥) ------------------
+# ------------------ AFTER 10TH  ------------------
 elif menu == "🎓 After 10th":
 
     st.markdown("<div class='big-title'>🎓 Career Options After 10th</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='section'>📚 1. Intermediate (11th & 12th)</div>", unsafe_allow_html=True)
     st.markdown("""
-    # ------------------ AFTER 10TH ------------------
-elif menu == "after10":
-
-    st.title("🎓 Career Options After 10th")
-
-    df = pd.read_csv("career_data_1000.csv")
-
-    st.subheader("📊 Student Interests")
-    st.bar_chart(df["interest"].value_counts())
-
-    st.subheader("📊 Career Trends")
-    st.bar_chart(df["career"].value_counts())
-
-    if st.button("⬅ Back"):
-        st.session_state.page = "home"
-        st.rerun()
+ 
 
  Most common and best option for higher studies  
 
@@ -395,55 +214,13 @@ Options:
 
 ✔ Online work, small business
 """)
-  # ----------- DASHBOARD -----------
-    st.markdown("---")
-    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
 
-    import plotly.express as px
-
-    try:
-        df = pd.read_csv("career_data_1000.csv")
-
-        st.subheader("📊 Career Distribution Based on Interest")
-        fig1 = px.histogram(df, x="interest", color="career", title="Interest vs Career")
-        st.plotly_chart(fig1, use_container_width=True)
-
-        st.subheader("📊 Skills Distribution")
-        fig2 = px.pie(df, names="skill", title="Skill Distribution")
-        st.plotly_chart(fig2, use_container_width=True)
-
-        st.subheader("📊 Personality Insights")
-        fig3 = px.bar(df["personality"].value_counts(), title="Personality Count")
-        st.plotly_chart(fig3, use_container_width=True)
-
-        st.success("💡 Insight: Choose stream based on your interest + skills combination")
-
-    except Exception as e:
-        st.error("⚠️ Dashboard error: Check dataset file")
-        st.write(e)
-# ------------------ AFTER 12TH (FULL ELABORATED 🔥) ------------------
+# ------------------ AFTER 12TH ------------------
 elif menu == "📘 After 12th":
 
     st.markdown("<div class='big-title'>📘 Career Options After 12th</div>", unsafe_allow_html=True)
 
-  # ------------------ AFTER 12TH ------------------
-elif menu == "after12":
-
-    st.title("📘 Career Options After 12th")
-
-    df = pd.read_csv("career_data_1000.csv")
-
-    st.subheader("📊 Subject vs Career")
-    st.bar_chart(df.groupby("subject")["career"].count())
-
-    st.subheader("📊 Skill Demand")
-    st.bar_chart(df["skill"].value_counts())
-
-    if st.button("⬅ Back"):
-        st.session_state.page = "home"
-        st.rerun()
-
-
+ 
     # ------------------ CONTENT ------------------
 
     # SCIENCE
@@ -539,25 +316,7 @@ Careers:
 👉 For AI/ML → B.Tech CSE  
 👉 Combine skills + degree  
 """)
-    # ------------------ DASHBOARD (TOP) ------------------
-    st.markdown("<div class='section'>📊 Career Insights Dashboard</div>", unsafe_allow_html=True)
-
-    import plotly.express as px
-    df = pd.read_csv("career_data_1000.csv")
-
-    st.subheader("📊 Subject vs Career")
-    fig1 = px.histogram(df, x="subject", color="career", title="Subjects and Career Paths")
-    st.plotly_chart(fig1)
-
-    st.subheader("📊 Interest vs Skill")
-    fig2 = px.scatter(df, x="interest", y="skill", color="career", title="Interest vs Skill Mapping")
-    st.plotly_chart(fig2)
-
-    st.subheader("📊 Career Popularity")
-    fig3 = px.bar(df["career"].value_counts(), title="Most Popular Careers")
-    st.plotly_chart(fig3)
-
-    st.success("💡 Insight: Choose career based on subject strength + interest")
+ 
 
 # ------------------ CAREER SECTORS ------------------
 elif menu == "💼 Career Sectors":
